@@ -160,7 +160,8 @@ sudo systemctl enable genieacs-cwmp genieacs-nbi genieacs-fs genieacs-ui
 ```bash
 cd /opt/genieacs/ext
 git init
-git remote add origin https://github.com/rsuhaendi/genieacs-1.2.16-VanajaNet.git 2>/dev/null || git remote set-url origin https://github.com/rsuhaendi/Ubuntu-Gacs-1.2.16-VanajaNet.git
+git remote add origin https://github.com/rsuhaendi/Ubuntu-Gacs-1.2.16-VanajaNet
+.git 2>/dev/null || git remote set-url origin https://github.com/rsuhaendi/Ubuntu-Gacs-1.2.16-VanajaNet.git
 git config --global credential.helper store
 git fetch origin
 git reset --hard origin/main
