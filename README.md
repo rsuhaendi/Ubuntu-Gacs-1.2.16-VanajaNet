@@ -65,7 +65,7 @@ chmod +x /opt/genieacs/ext/*.js
 sudo mkdir -p /etc/genieacs
 
 sudo bash -c 'cat <<EOF> /etc/genieacs/genieacs.env
-GENIEACS_CWMP_PORT=7547
+GENIEACS_CWMP_PORT=9901
 GENIEACS_NBI_PORT=7557
 GENIEACS_FS_PORT=7567
 GENIEACS_UI_PORT=3000
