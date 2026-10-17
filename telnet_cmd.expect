@@ -1,0 +1,14 @@
+#!/usr/bin/expect -f
+set ip [lindex $argv 0]
+set timeout 15
+
+spawn telnet $ip 23
+expect {
+    "login:" { send "admin\r"; exp_continue }
+    "Password:" { send "rootTM\r" }
+}
+expect "#"
+send "sh /usr/osgi/iptables_rule.sh\r"
+expect "#"
+send "exit\r"
+expect eof
