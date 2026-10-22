@@ -15,7 +15,7 @@ function getComment(args, callback) {
   // Bersihkan IP dari spasi/port/CIDR
   ipAddress = String(ipAddress).trim().split(':')[0].split('/')[0];
 
-  const authHeader = 'Basic ' + Buffer.from('acs:Angkasa12').toString('base64');
+  const authHeader = 'Basic ' + Buffer.from('cwmp:cwmp').toString('base64');
 
   const options = {
     hostname: '10.26.51.254',
