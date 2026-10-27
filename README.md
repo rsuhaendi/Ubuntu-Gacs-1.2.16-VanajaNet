@@ -36,30 +36,26 @@ sudo systemctl enable --now mongod
 ---
 ### 3. Install Nodejs & GenieACS termasuk Extention RouterOs-Client & telenet enable ping untuk ONT GS3101
 ```bash
-# 1. Install Node.js v20 (Sistem)
+# 1. Update sistem & install Node.js v20
 curl -fsSL https://deb.nodesource.com/setup_20.x | sudo -E bash -
-sudo apt install -y nodejs
+sudo apt update && sudo apt install -y nodejs expect
 
-# 2. Install GenieACS secara global
+# 2. Install GenieACS secara global (sesuaikan versi jika perlu)
 sudo npm install -g genieacs@1.2.16
 
-# 3. Buat direktori kerja untuk ekstensi dan atur hak akses
+# 3. Buat direktori kerja & atur kepemilikan
 sudo mkdir -p /opt/genieacs/ext
 sudo chown -R $USER:$USER /opt/genieacs
 
-# 4. Masuk ke direktori ekstensi GenieACS
+# 4. Clone atau Restore file dari Git Anda ke /opt/genieacs/ext
+# (Contoh: git clone <url-repo-anda> /opt/genieacs/ext)
+
+# 5. Masuk ke direktori ekstensi & install dependensi Node.js
 cd /opt/genieacs/ext
+npm install
 
-# 5. Inisialisasi npm project & install routeros-client
-npm init -y
-npm install routeros-client
-
-# 6. isntallasi enable ping via telnet & harus di set dulu ip tables di ont nya
-apt update
-apt install expect -y 
-
-# 7. Beri izin eksekusi pada file JavaScript ekstensi (misal: mikrotik.js)
-chmod +x /opt/genieacs/ext/*.js
+# 6. Beri izin eksekusi untuk semua file skrip (.js dan .expect)
+chmod +x /opt/genieacs/ext/*.js /opt/genieacs/ext/*.expect
 ```
 
 ---
