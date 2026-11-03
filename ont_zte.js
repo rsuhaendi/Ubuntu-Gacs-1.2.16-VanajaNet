@@ -1,29 +1,39 @@
-// Membaca SSID + passphrase WiFi ONT ZTE (CL601) lewat shell telnet.
-// Firmware ZTE menyembunyikan KeyPassphrase lewat TR-069 (selalu kosong), tapi
-// database internalnya bisa di-dump dari shell: "sidbg 1 DB p WLANPSK" dan
-// "sidbg 1 DB p WLANCfg". Kredensial shell dibaca dari env, fallback ke pasangan
-// CT-COM standar yang juga tersimpan di DeviceInfo.X_CT-COM_ServiceManage.
+// Membaca passphrase WiFi + SSID ONT ZTE (CL601) lewat shell telnet.
+// ZTE menyembunyikan KeyPassphrase lewat TR-069 (selalu kosong), tapi database
+// internalnya bisa di-dump dari shell: "sidbg 1 DB p WLANCfg / WLANPSK".
+// Akun web CL601 ada di modul ont_zte_db (file terpisah karena genieacs menyimpan
+// modul ext per proses worker). Kredensial shell dari env ZTE_TELNET_USER/PASS/PORT,
+// fallback pasangan CT-COM standar yang juga ada di X_CT-COM_ServiceManage.
 const net = require("net");
 const cfg = require("./ont_config.js");
 
 const USER = process.env.ZTE_TELNET_USER || "teluser";
 const PASS = process.env.ZTE_TELNET_PASS || "teluser123";
 const PORT = Number(process.env.ZTE_TELNET_PORT || 23);
-const PSK_TABLE = "WLANPSK";
+
 const CFG_TABLE = "WLANCfg";
+const PSK_TABLE = "WLANPSK";
 
 function open(ip) {
   return new Promise((resolve, reject) => {
     const s = net.createConnection({ host: ip, port: PORT });
     s.setNoDelay(true);
+    let settled = false;
+    const fail = (err) => {
+      if (settled) return;
+      settled = true;
+      s.destroy();
+      reject(err);
+    };
+    // Handler error harus tetap terpasang setelah connect: socket yang RST di tengah
+    // perintah akan memicu 'error' dan menjatuhkan proses ext kalau tidak ada listener.
+    s.on("error", (err) => fail(new Error("telnet " + ip + ": " + err.message)));
+    s.on("close", () => fail(new Error("telnet " + ip + " ditutup")));
+    s.setTimeout(4000, () => fail(new Error("telnet " + ip + ":" + PORT + " timeout")));
     s.once("connect", () => {
+      settled = true;
       s.setTimeout(0);
       resolve(s);
-    });
-    s.once("error", reject);
-    s.setTimeout(4000, () => {
-      s.destroy();
-      reject(new Error("telnet " + ip + ":" + PORT + " timeout"));
     });
   });
 }
@@ -34,24 +44,45 @@ function drain(s, idle, max) {
     let buf = "";
     let last = Date.now();
     const end = last + max;
+    function onData(d) {
+      buf += d.toString("utf8");
+      last = Date.now();
+    }
     const tick = setInterval(() => {
       if (Date.now() - last >= idle || Date.now() >= end) {
         clearInterval(tick);
-        s.removeAllListeners("data");
+        s.removeListener("data", onData);
         resolve(buf);
       }
     }, 20);
-    s.on("data", (d) => {
-      buf += d.toString("utf8");
-      last = Date.now();
-    });
+    s.on("data", onData);
   });
 }
 
-async function command(s, cmd, rem, idle) {
-  s.write(cmd + "\r\n");
-  const out = await drain(s, idle || 250, Math.min(2500, rem()));
-  return out.replace(/\r/g, "");
+async function shell(ip, rem) {
+  const s = await open(ip);
+  const send = (t) => {
+    if (s.writable) s.write(t);
+  };
+  await drain(s, 200, 400);
+  send(USER + "\r\n");
+  await drain(s, 200, Math.min(1200, rem()));
+  send(PASS + "\r\n");
+  const hello = await drain(s, 250, Math.min(2000, rem()));
+  if (!/[$#>]$/.test(hello.trim())) {
+    s.destroy();
+    throw new Error("login telnet ditolak (" + USER + ")");
+  }
+  return {
+    run: async (cmd) => {
+      send(cmd + "\r\n");
+      return (await drain(s, 250, Math.min(2500, rem()))).replace(/\r/g, "");
+    },
+    close: () => {
+      send("exit\r\n");
+      s.destroy();
+    },
+  };
 }
 
 function attr(row, name) {
@@ -63,8 +94,7 @@ function rows(text, table) {
   const start = text.indexOf('<Tbl name="' + table + '"');
   if (start < 0) return [];
   const end = text.indexOf("</Tbl>", start);
-  const body = text.slice(start, end < 0 ? text.length : end);
-  return body.split("<Row ").slice(1);
+  return text.slice(start, end < 0 ? text.length : end).split("<Row ").slice(1);
 }
 
 // Index WLAN diambil dari ViewName IGD.LD1.WLAN<n>, bukan dari urutan baris.
@@ -73,7 +103,7 @@ function wlanIndex(view) {
   return m ? Number(m[1]) : 0;
 }
 
-function parse(texts) {
+function parseWlan(texts) {
   const by = new Map();
   for (const row of rows(texts.cfg, CFG_TABLE)) {
     const i = wlanIndex(attr(row, "ViewName"));
@@ -90,8 +120,7 @@ function parse(texts) {
     const i = wlanIndex(attr(row, "ViewName"));
     if (!i) continue;
     const e = by.get(i) || { index: i, ssid: "", enable: false, hidden: false, beacon: "" };
-    e.psk = attr(row, "KeyPassphrase");
-    if (!e.psk) e.psk = attr(row, "PreSharedKey");
+    e.psk = attr(row, "KeyPassphrase") || attr(row, "PreSharedKey");
     by.set(i, e);
   }
   return [...by.values()].sort((a, b) => a.index - b.index);
@@ -99,34 +128,37 @@ function parse(texts) {
 
 async function readWlan(ip, totalMs) {
   const rem = cfg.budget(totalMs);
-  const s = await open(ip);
+  const sh = await shell(ip, rem);
   try {
-    await drain(s, 200, 400);
-    s.write(USER + "\r\n");
-    await drain(s, 200, Math.min(1200, rem()));
-    s.write(PASS + "\r\n");
-    const login = await drain(s, 250, Math.min(2000, rem()));
-    if (!/[$#>]\s*$/.test(login.trim().slice(-4)))
-      throw new Error("login telnet ditolak (" + USER + ")");
-    const cfgText = await command(s, "sidbg 1 DB p " + CFG_TABLE, rem);
-    const pskText = await command(s, "sidbg 1 DB p " + PSK_TABLE, rem);
-    s.write("exit\r\n");
-    const entries = parse({ cfg: cfgText, psk: pskText });
+    const entries = parseWlan({
+      cfg: await sh.run("sidbg 1 DB p " + CFG_TABLE),
+      psk: await sh.run("sidbg 1 DB p " + PSK_TABLE),
+    });
     if (!entries.length) throw new Error("tabel WLAN tidak terbaca (sidbg?)");
     return entries;
   } finally {
-    s.destroy();
+    sh.close();
   }
 }
 
-function get(args, callback) {
+function ipOf(args) {
   const ip = args && args[0];
-  if (!/^\d{1,3}(\.\d{1,3}){3}$/.test(String(ip || "")))
-    return callback(new Error("IP ONT tidak valid"));
-  const t = Math.max(500, Math.min(Number(args[1]) || 6000, 6000));
-  readWlan(ip, t)
-    .then((entries) => callback(null, JSON.stringify({ entries: entries })))
-    .catch((err) => callback(err));
+  if (!/^\d{1,3}(\.\d{1,3}){3}$/.test(String(ip || ""))) throw new Error("IP ONT tidak valid");
+  return ip;
+}
+
+function timeoutOf(v) {
+  return Math.max(500, Math.min(Number(v) || 2800, 8000));
+}
+
+function get(args, callback) {
+  try {
+    readWlan(ipOf(args), timeoutOf(args[1]))
+      .then((entries) => callback(null, JSON.stringify({ entries: entries })))
+      .catch((err) => callback(err));
+  } catch (err) {
+    callback(err);
+  }
 }
 
 module.exports = { get, readWlan };
