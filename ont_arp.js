@@ -1,19 +1,71 @@
-// Daftar client AKTIF di LAN ONT lewat shell telnet: "cat /proc/net/arp".
-// ARP kernel = host yang benar-benar ada lalu-lintas paket terakhir, tercakup
-// client DHCP maupun IP statik (yang tidak muncul di Hosts.Host TR-069).
-// Entri dengan Flags 0x2 (complete) pada bridge br0; entri gateway WAN
-// (dev nas*) dan yang belum resolve (0x0) dibuang.
-// Kredensial: env CMDC_TELNET_USER/PASS/PORT, default admin/rootTM (CMDC GS3101).
+// Daftar client AKTIF di LAN ONT lewat shell telnet.
+//   GS3101 (busybox YHTC) : "cat /proc/net/arp" — flags 0x2 di bridge br0.
+//   VSOL V2801RGW/V2802DAC : CLI "show arp" + "show route"; entri yang rute
+//     terbaiknya bukan interface LAN (br/lan/eth) dibuang (gateway WAN, nas*, ppp0).
+// ARP kernel = host yang benar-benar ada lalu-lintas terakhir; tercakup client
+// DHCP maupun IP statik (yang tidak muncul di Hosts.Host TR-069).
+// Kredensial env: CMDC_TELNET_USER/PASS (admin/rootTM), VSOL_TELNET_USER/PASS
+// (admin/stdVSOL101), port telnet via *_TELNET_PORT atau argumen ke-4.
 const net = require("net");
 
-const USER = process.env.CMDC_TELNET_USER || "admin";
-const PASS = process.env.CMDC_TELNET_PASS || "rootTM";
-const PORT = Number(process.env.CMDC_TELNET_PORT || 23);
+function profileOf(model) {
+  if (/^V28\d\d/.test(String(model || "")))
+    return {
+      name: "VSOL",
+      user: process.env.VSOL_TELNET_USER || "admin",
+      pass: process.env.VSOL_TELNET_PASS || "stdVSOL101",
+      port: Number(process.env.VSOL_TELNET_PORT || 23),
+      cmds: ["show arp", "show route", "show bridge mac"],
+      parse: parseVsol,
+    };
+  return {
+    name: "GS3101",
+    user: process.env.CMDC_TELNET_USER || "admin",
+    pass: process.env.CMDC_TELNET_PASS || "rootTM",
+    port: Number(process.env.CMDC_TELNET_PORT || 23),
+    cmds: ["cat /proc/net/arp"],
+    parse: (texts) => ({ clients: parseBusybox(texts[0]) }),
+  };
+}
 
-function open(ip, deadline) {
+// Terjemahkan stream telnet: balas negosiasi (WONT/DONT), buang IAC/NULL.
+function decode(s, chunk) {
+  let txt = "";
+  for (let i = 0; i < chunk.length; i++) {
+    const b = chunk[i];
+    if (b === 0xff && i + 1 < chunk.length) {
+      const cmd = chunk[i + 1];
+      if ((cmd === 0xfd || cmd === 0xfb) && i + 2 < chunk.length) {
+        if (s.writable) s.write(Buffer.from([0xff, cmd === 0xfd ? 0xfc : 0xfe, chunk[i + 2]]));
+        i += 2;
+        continue;
+      }
+      if (cmd === 0xfc || cmd === 0xfe) { i += 2; continue; }
+      if (cmd === 0xfa) {
+        let j = i + 2;
+        while (j + 1 < chunk.length && !(chunk[j] === 0xff && chunk[j + 1] === 0xf0)) j++;
+        i = j + 1;
+        continue;
+      }
+      if (cmd === 0xff) { txt += "ÿ"; i++; continue; }
+      i++;
+      continue;
+    }
+    if (b === 0x00) continue;
+    txt += String.fromCharCode(b);
+  }
+  return txt;
+}
+
+function open(ip, port, deadline) {
   return new Promise((resolve, reject) => {
-    const s = net.createConnection({ host: ip, port: PORT });
+    const s = net.createConnection({ host: ip, port: port });
     s.setNoDelay(true);
+    const acc = { buf: "", last: Date.now() };
+    s.on("data", (d) => {
+      acc.buf += decode(s, d);
+      acc.last = Date.now();
+    });
     let settled = false;
     const fail = (err) => {
       if (settled) return;
@@ -23,43 +75,56 @@ function open(ip, deadline) {
     };
     s.on("error", (err) => fail(new Error("telnet " + ip + ": " + err.message)));
     s.on("close", () => fail(new Error("telnet " + ip + " ditutup")));
-    const timer = setTimeout(() => fail(new Error("telnet " + ip + ":" + PORT + " timeout")), Math.max(0, deadline - Date.now()));
+    const timer = setTimeout(() => fail(new Error("telnet " + ip + ":" + port + " timeout")), Math.max(0, deadline - Date.now()));
     s.once("connect", () => {
       clearTimeout(timer);
       settled = true;
-      resolve(s);
+      acc.s = s;
+      resolve(acc);
     });
   });
 }
 
 // Baca sampai tidak ada data baru selama `idle` ms, atau `max` ms terlewati.
-function drain(s, idle, max) {
+function drain(acc, idle, max) {
   return new Promise((resolve) => {
-    let buf = "";
-    let last = Date.now();
-    const end = last + max;
-    function onData(d) {
-      buf += d.toString("utf8");
-      last = Date.now();
-    }
+    acc.buf = "";
+    acc.last = Date.now();
+    const end = acc.last + max;
     const tick = setInterval(() => {
-      if (Date.now() - last >= idle || Date.now() >= end) {
+      if (Date.now() - acc.last >= idle || Date.now() >= end) {
         clearInterval(tick);
-        s.removeListener("data", onData);
-        resolve(buf);
+        resolve(acc.buf);
       }
     }, 20);
-    s.on("data", onData);
   });
 }
 
-function parseArp(text) {
+// VSOL CLI merender tabel per-pancaran dengan jeda >300ms; idle-drain biasa
+// membuat tabel terpotong (jumlah klien berubah 0,1,2,3 antar summon).
+// Baca terus sampai prompt ("/[>$#]\\s*$/") muncul di ujung dan stream diam.
+function untilPrompt(acc, max) {
+  return new Promise((resolve) => {
+    acc.buf = "";
+    acc.last = Date.now();
+    const end = acc.last + max;
+    const tick = setInterval(() => {
+      const quiet = Date.now() - acc.last >= 120;
+      const prompted = /[>$#]\s*$/.test(acc.buf.replace(/\s+$/, ""));
+      if ((quiet && prompted) || Date.now() >= end) {
+        clearInterval(tick);
+        resolve(acc.buf);
+      }
+    }, 25);
+  });
+}
+
+function parseBusybox(text) {
   const clients = [];
-  for (const line of text.replace(/\r/g, "").split("\n")) {
+  for (const line of String(text).replace(/\r/g, "").split("\n")) {
     const f = line.trim().split(/\s+/);
     if (f.length < 6) continue;
     const [ip, , flags, mac, , dev] = f;
-    if (!/^10\.0|^\d/.test(ip)) continue;
     if (!/^\d+\.\d+\.\d+\.\d+$/.test(ip)) continue;
     if (flags !== "0x2") continue;
     if (dev !== "br0") continue;
@@ -68,27 +133,96 @@ function parseArp(text) {
   return clients;
 }
 
-async function readArp(ip, totalMs) {
-  const deadline = Date.now() + totalMs;
-  const s = await open(ip, deadline);
+const clean = (t) => String(t).replace(/\x1b\[[0-9;?]*[A-Za-z]/g, "").replace(/\r/g, "");
+
+// Interface LAN VSOL: br0/br0.*, lan*, eth*. Selain itu (ppp0, nas0_*=TR-069/voip) dibuang.
+const LAN_IFACE = /^(br|lan|eth)/i;
+
+function parseVsol(texts) {
+  const routes = [];
+  for (const line of clean(texts[1] || "").split("\n")) {
+    const m = line.trim().match(/^(\d+\.\d+\.\d+\.\d+)\s+(\d+\.\d+\.\d+\.\d+)\s+\S+\s+(\S+)$/);
+    if (m) routes.push({ dest: m[1], mask: m[2], iface: m[3] });
+  }
+  const inNet = (ip, dest, mask) => {
+    const a = ip.split(".").map(Number), d = dest.split(".").map(Number), k = mask.split(".").map(Number);
+    return a.every((o, i) => (o & k[i]) === (d[i] & k[i]));
+  };
+  const ifaceOf = (ip) => {
+    let best = null, bestMask = -1;
+    for (const r of routes) {
+      let score = 0;
+      for (const oct of r.mask.split(".").map(Number)) for (let b = 7; b >= 0; b--) if (oct & (1 << b)) score++;
+      if (score > bestMask && inNet(ip, r.dest, r.mask)) { bestMask = score; best = r.iface; }
+    }
+    return best;
+  };
+  const clients = [];
+  for (const line of clean(texts[0] || "").split("\n")) {
+    const m = line.trim().match(/^(\d+\.\d+\.\d+\.\d+)\s+([0-9a-fA-F]{2}(?::[0-9a-fA-F]{2}){5})/);
+    if (!m) continue;
+    const iface = ifaceOf(m[1]);
+    // hanya buang yang PASTI lewat interface WAN (ppp/nas/dsl); tak dikenal -> pertahankan,
+    // supaya tabel route yang terpotong tidak menghapus semua klien.
+    if (iface && !LAN_IFACE.test(iface)) continue;
+    clients.push({ ip: m[1], mac: m[2].toUpperCase() });
+  }
+
+  // Bridge forwarding DB: MAC yang belajar dari trafik *bridged* (client <-> internet
+  // tanpa menyentuh stack IP ONT), aging 300s. ARP kernel aging jauh lebih agresif,
+  // jadi klien kabel yang diam sering hilang dari ARP padahal port-nya jelas Up.
+  const bridge = [];
+  for (const line of clean(texts[2] || "").split("\n")) {
+    const m = line.trim().match(/^(\d+)\s+([0-9a-fA-F]{2}(?::[0-9a-fA-F]{2}){5})\s+(yes|no)\b/i);
+    if (!m) continue;
+    if (/^yes$/i.test(m[3])) continue;
+    bridge.push({ port: m[1], mac: m[2].toUpperCase() });
+  }
+  return { clients: clients, bridge: bridge };
+}
+
+// Satu sesi telnet -> jalankan satu perintah -> kumpulkan output sampai prompt.
+// Login VSOL kadang merender menu bertahap, jadi kalau window baca habis sebelum
+// prompt muncul kita kirim baris kosong dan tunggu lagi (bukan langsung gagal).
+async function telnetCmd(ip, port, p, cmd, deadline) {
+  const acc = await open(ip, port, deadline);
+  const s = acc.s;
   const rem = () => Math.max(0, deadline - Date.now());
   const send = (t) => {
-    if (s.writable) s.write(t);
+    if (s.writable) s.write(t + "\r\n");
   };
   try {
-    await drain(s, 200, Math.min(400, rem()));
-    send(USER + "\r\n");
-    await drain(s, 200, Math.min(1200, rem()));
-    send(PASS + "\r\n");
-    const hello = await drain(s, 250, Math.min(2000, rem()));
-    if (!/[$#>]$/.test(hello.trim())) throw new Error("login telnet ditolak (" + USER + ")");
-    send("cat /proc/net/arp\r\n");
-    const out = await drain(s, 250, Math.min(2500, rem()));
-    return parseArp(out);
+    await drain(acc, 150, Math.min(400, rem()));
+    send(p.user);
+    await drain(acc, 150, Math.min(800, rem()));
+    send(p.pass);
+    let hello = "";
+    for (let attempt = 0; attempt < 3; attempt++) {
+      if (attempt) send("");
+      hello = await untilPrompt(acc, Math.min(2500, rem()));
+      if (/[$#>]$/.test(hello.trim())) break;
+      if (/login\s*(error|failed|incorrect)|bad\s*(password|login)/i.test(hello))
+        throw new Error("login telnet ditolak (" + p.user + ")");
+    }
+    if (!/[$#>]$/.test(hello.trim())) throw new Error("login telnet ditolak (" + p.user + ")");
+    send(cmd);
+    return await untilPrompt(acc, Math.min(4000, rem()));
   } finally {
-    send("exit\r\n");
     s.destroy();
   }
+}
+
+async function readArp(ip, totalMs, model, port) {
+  const p = profileOf(model);
+  const deadline = Date.now() + totalMs;
+  // Perintah dijalankan berurutan dalam sesi sendiri-sendiri: beberapa ONT
+  // menolak koneksi telnet kedua yang datang bersamaan.
+  const texts = [];
+  for (const cmd of p.cmds) texts.push(await telnetCmd(ip, port || p.port, p, cmd, deadline));
+  const res = p.parse(texts);
+  if (!res || !Array.isArray(res.clients)) throw new Error("output " + p.name + " tidak dikenali");
+  if (!Array.isArray(res.bridge)) res.bridge = [];
+  return res;
 }
 
 function get(args, callback) {
@@ -98,8 +232,8 @@ function get(args, callback) {
     return;
   }
   const timeout = Math.max(1000, Math.min(Number(args[1]) || 4500, 9000));
-  readArp(ip, timeout)
-    .then((clients) => callback(null, JSON.stringify({ clients: clients })))
+  readArp(ip, timeout, args[2], Number(args[3]) || 0)
+    .then((res) => callback(null, JSON.stringify(res)))
     .catch((err) => callback(err));
 }
 
