@@ -171,14 +171,26 @@ function parseVsol(texts) {
   // Bridge forwarding DB: MAC yang belajar dari trafik *bridged* (client <-> internet
   // tanpa menyentuh stack IP ONT), aging 300s. ARP kernel aging jauh lebih agresif,
   // jadi klien kabel yang diam sering hilang dari ARP padahal port-nya jelas Up.
-  const bridge = [];
-  for (const line of clean(texts[2] || "").split("\n")) {
-    const m = line.trim().match(/^(\d+)\s+([0-9a-fA-F]{2}(?::[0-9a-fA-F]{2}){5})\s+(yes|no)\b/i);
-    if (!m) continue;
-    if (/^yes$/i.test(m[3])) continue;
-    bridge.push({ port: m[1], mac: m[2].toUpperCase() });
+  // Kolom "Ageing Timer" menghitung NAIK sejak frame terakhir, jadi umurnya yang
+  // menjadi penanda "masih ada": entri berumur >120s sudah tidak mengirim apa-apa.
+  // Port yang menaungi MAC lokal ONT (Is Local? = yes) adalah radio WiFi; port lain
+  // adalah port kabel. Ini satu-satunya pembeda WiFi/kabel di V2802DAC, yang sub-tree
+  // AssociatedDevice-nya selalu kosong.
+  const FRESH_MAX = 120;
+  const lines = clean(texts[2] || "").split("\n");
+  const fdb = [];
+  for (const line of lines) {
+    const m = line.trim().match(/^(\d+)\s+([0-9a-fA-F]{2}(?::[0-9a-fA-F]{2}){5})\s+(yes|no)\s+([\d.]+)/i);
+    if (m) fdb.push({ port: m[1], mac: m[2].toUpperCase(), local: /^yes$/i.test(m[3]), age: Number(m[4]) });
   }
-  return { clients: clients, bridge: bridge };
+  const radioPorts = {};
+  for (const e of fdb) if (e.local) radioPorts[e.port] = true;
+  const bridge = [];
+  for (const e of fdb) {
+    if (e.local || !(e.age >= 0) || e.age > FRESH_MAX) continue;
+    bridge.push({ port: e.port, mac: e.mac, age: Math.round(e.age), radio: !!radioPorts[e.port] });
+  }
+  return { clients: clients, bridge: bridge, radioPorts: Object.keys(radioPorts) };
 }
 
 // Satu sesi telnet -> jalankan satu perintah -> kumpulkan output sampai prompt.
@@ -222,6 +234,7 @@ async function readArp(ip, totalMs, model, port) {
   const res = p.parse(texts);
   if (!res || !Array.isArray(res.clients)) throw new Error("output " + p.name + " tidak dikenali");
   if (!Array.isArray(res.bridge)) res.bridge = [];
+  if (!Array.isArray(res.radioPorts)) res.radioPorts = [];
   return res;
 }
 
