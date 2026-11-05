@@ -1,9 +1,9 @@
 // Daftar client AKTIF di LAN ONT lewat shell telnet.
-//   GS3101 (busybox YHTC) : "cat /proc/net/arp" — flags 0x2 di bridge br0.
-//   VSOL V2801RGW/V2802DAC : CLI "show arp" + "show route"; entri yang rute
-//     terbaiknya bukan interface LAN (br/lan/eth) dibuang (gateway WAN, nas*, ppp0).
-// ARP kernel = host yang benar-benar ada lalu-lintas terakhir; tercakup client
-// DHCP maupun IP statik (yang tidak muncul di Hosts.Host TR-069).
+//   GS3101 (busybox YHTC)  : "cat /proc/net/arp" (flags 0x2 di br0) + "brctl showmacs br0".
+//   VSOL V2801RGW/V2802DAC : "show arp" + "show route" + "show bridge macs"; entri ARP
+//     yang rute terbaiknya bukan interface LAN (br/lan/eth) dibuang (gateway WAN, nas*, ppp0).
+// ARP dipakai bersama tabel forwarding bridge: ARP = IP terakhir, bridge = MAC yang
+// masih benar-benar mengirim frame. Keduanya lihat sisi berbeda, lihat parseFdb().
 // Kredensial env: CMDC_TELNET_USER/PASS (admin/rootTM), VSOL_TELNET_USER/PASS
 // (admin/stdVSOL101), port telnet via *_TELNET_PORT atau argumen ke-4.
 const net = require("net");
@@ -15,7 +15,7 @@ function profileOf(model) {
       user: process.env.VSOL_TELNET_USER || "admin",
       pass: process.env.VSOL_TELNET_PASS || "stdVSOL101",
       port: Number(process.env.VSOL_TELNET_PORT || 23),
-      cmds: ["show arp", "show route", "show bridge mac"],
+      cmds: ["show arp", "show route", "show bridge macs"],
       parse: parseVsol,
     };
   return {
@@ -23,8 +23,11 @@ function profileOf(model) {
     user: process.env.CMDC_TELNET_USER || "admin",
     pass: process.env.CMDC_TELNET_PASS || "rootTM",
     port: Number(process.env.CMDC_TELNET_PORT || 23),
-    cmds: ["cat /proc/net/arp"],
-    parse: (texts) => ({ clients: parseBusybox(texts[0]) }),
+    cmds: ["cat /proc/net/arp", "brctl showmacs br0"],
+    parse: (texts) => {
+      const f = parseFdb(texts[1]);
+      return { clients: parseBusybox(texts[0]), bridge: f.bridge, radioPorts: f.radioPorts };
+    },
   };
 }
 
@@ -138,6 +141,41 @@ const clean = (t) => String(t).replace(/\x1b\[[0-9;?]*[A-Za-z]/g, "").replace(/\
 // Interface LAN VSOL: br0/br0.*, lan*, eth*. Selain itu (ppp0, nas0_*=TR-069/voip) dibuang.
 const LAN_IFACE = /^(br|lan|eth)/i;
 
+// Bridge forwarding DB -- VSOL "show bridge macs", GS3101 "brctl showmacs br0";
+// keduanya memakai kolom yang sama. MAC di sini belajar dari trafik *bridged*
+// (client <-> internet tanpa menyentuh stack IP ONT), sedangkan ARP kernel hanya
+// menyimpan host yang bicara DENGAN ONT dan bisa berumur sangat panjang. Karena itu
+// entri ARP tanpa padanan di tabel bridge = klien yang sudah pergi, dan tidak dihitung.
+// Kolom "ageing timer" menghitung NAIK sejak frame terakhir (entri dibuang pada
+// Bridge Ageing Time, bawaan 300s), jadi ambang 120s menandai yang masih hidup.
+// Port yang menaungi MAC lokal ONT (is local = yes), atau bernama wlan/ath, adalah
+// radio WiFi; port lain port kabel. V2802DAC tidak pernah mengisi AssociatedDevice,
+// jadi hanya kolom ini yang bisa membedakan WiFi vs kabel di model itu.
+const FRESH_MAX = 120;
+function parseFdb(text) {
+  const fdb = [];
+  for (const line of clean(text || "").split("\n")) {
+    const m = line.trim().match(/^(\S+)\s+([0-9a-fA-F]{2}(?::[0-9a-fA-F]{2}){5})\s+(yes|no)\s+([\d.]+)/i);
+    if (m) fdb.push({ port: m[1], mac: m[2].toUpperCase(), local: /^yes$/i.test(m[3]), age: Number(m[4]) });
+  }
+  const radioPorts = {};
+  const perPort = {};
+  for (const e of fdb) {
+    if (e.local || /wlan|wifi|ath/i.test(e.port)) radioPorts[e.port] = true;
+    else perPort[e.port] = (perPort[e.port] || 0) + 1;
+  }
+  // Port switch hanya menaungi satu perangkat di bawahnya; port radio menaungi
+  // banyak stasiun. Kalau ONT tidak menaruh MAC lokal di bridge (V2801RGW), jumlah
+  // MAC per port adalah satu-satunya penanda radio.
+  for (const port of Object.keys(perPort)) if (perPort[port] >= 2) radioPorts[port] = true;
+  const bridge = [];
+  for (const e of fdb) {
+    if (e.local || !(e.age >= 0) || e.age > FRESH_MAX) continue;
+    bridge.push({ port: e.port, mac: e.mac, age: Math.round(e.age), radio: !!radioPorts[e.port] });
+  }
+  return { bridge: bridge, radioPorts: Object.keys(radioPorts) };
+}
+
 function parseVsol(texts) {
   const routes = [];
   for (const line of clean(texts[1] || "").split("\n")) {
@@ -168,29 +206,8 @@ function parseVsol(texts) {
     clients.push({ ip: m[1], mac: m[2].toUpperCase() });
   }
 
-  // Bridge forwarding DB: MAC yang belajar dari trafik *bridged* (client <-> internet
-  // tanpa menyentuh stack IP ONT), aging 300s. ARP kernel aging jauh lebih agresif,
-  // jadi klien kabel yang diam sering hilang dari ARP padahal port-nya jelas Up.
-  // Kolom "Ageing Timer" menghitung NAIK sejak frame terakhir, jadi umurnya yang
-  // menjadi penanda "masih ada": entri berumur >120s sudah tidak mengirim apa-apa.
-  // Port yang menaungi MAC lokal ONT (Is Local? = yes) adalah radio WiFi; port lain
-  // adalah port kabel. Ini satu-satunya pembeda WiFi/kabel di V2802DAC, yang sub-tree
-  // AssociatedDevice-nya selalu kosong.
-  const FRESH_MAX = 120;
-  const lines = clean(texts[2] || "").split("\n");
-  const fdb = [];
-  for (const line of lines) {
-    const m = line.trim().match(/^(\d+)\s+([0-9a-fA-F]{2}(?::[0-9a-fA-F]{2}){5})\s+(yes|no)\s+([\d.]+)/i);
-    if (m) fdb.push({ port: m[1], mac: m[2].toUpperCase(), local: /^yes$/i.test(m[3]), age: Number(m[4]) });
-  }
-  const radioPorts = {};
-  for (const e of fdb) if (e.local) radioPorts[e.port] = true;
-  const bridge = [];
-  for (const e of fdb) {
-    if (e.local || !(e.age >= 0) || e.age > FRESH_MAX) continue;
-    bridge.push({ port: e.port, mac: e.mac, age: Math.round(e.age), radio: !!radioPorts[e.port] });
-  }
-  return { clients: clients, bridge: bridge, radioPorts: Object.keys(radioPorts) };
+  const f = parseFdb(texts[2]);
+  return { clients: clients, bridge: f.bridge, radioPorts: f.radioPorts };
 }
 
 // Satu sesi telnet -> jalankan satu perintah -> kumpulkan output sampai prompt.
