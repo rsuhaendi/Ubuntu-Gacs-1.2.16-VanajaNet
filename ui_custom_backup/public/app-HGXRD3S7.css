@@ -194,30 +194,31 @@ html[data-theme="dark"] #header > nav > ul > li:hover > a {
 html[data-theme="dark"] div.tab > ul > li > a,
 html[data-theme="dark"] #header > nav > ul > li > a { color: #d4b78f !important; }
 
-/* Summon Gold Solid Elegan: kontras jelas di atas #35383d (body sekarang) */
-.summon-button, button.summon-button { display: inline-block !important; width: auto !important; max-width: none !important; }
-.parameter-list > .summon-button, .summon-button {
+/* Summon Gold Solid Elegan: kontras jelas di atas #35383d (body sekarang).
+   NB: komponen summon-button me-render <button class="primary">, BUKAN .summon-button — dan selector WAJIB dark-scoped (html[data-theme="dark"] button.primary) agar menang atas rule dark lama yg spesifisitasnya (0,2,2) */
+.summon-button, button.summon-button, html[data-theme="dark"] button.primary { display: inline-block !important; width: auto !important; max-width: none !important; }
+.parameter-list > .summon-button, .summon-button, html[data-theme="dark"] button.primary {
   display: inline-block !important;
-  padding: 6px 14px !important;
-  border-radius: 20px !important;
-  border: 1px solid #d4b78f !important;
-  background: #d4b78f !important;
-  color: #35383d !important;
-  font-weight: 700 !important;
+  padding: 1px 8px !important; /* kecil spt tag */
+  border-radius: 4px !important;
+  border: none !important; /* tag tidak pakai border */
+  background: #d4b78f !important; /* fill tag #d4b78f */
+  color: #35383d !important; /* teks tag gelap */
+  font-weight: normal !important;
   text-decoration: none !important;
-  outline: 2px solid #f0d9a8 !important;
-  outline-offset: 1px !important;
-  letter-spacing: 0.02em !important;
-  box-shadow: 0 4px 16px rgba(212,183,143,0.35), inset 0 1px 0 rgba(212,183,143,0.35) !important;
+  outline: none !important;
+  letter-spacing: normal !important;
+  box-shadow: none !important;
 }
-.summon-button:hover, button.summon-button:hover {
+.summon-button:hover, button.summon-button:hover, html[data-theme="dark"] button.primary:hover {
   background: #f0d9a8 !important;
   color: #35383d !important;
-  outline-color: #ffffff !important;
   border-color: #f0d9a8 !important;
-  box-shadow: 0 4px 14px rgba(212,183,143,0.35), inset 0 1px 0 rgba(212,183,143,0.35) !important;
+  outline: none !important;
+  box-shadow: none !important;
 }
-.summon-button:active, button.summon-button:active { transform: scale(0.98) !important; }
+.summon-button:active, button.summon-button:active, html[data-theme="dark"] button.primary:active { transform: scale(0.98) !important; }
+button.primary:disabled { background: #5f6368 !important; color: #3c4043 !important; border: none !important; outline: none !important; cursor: not-allowed !important; }
 span.inform:not(:has(.overview-dot)) { display: inline !important; }
 span.inform:not(:has(.overview-dot)) > button { display: inline-block !important; }
 button { display: inline-block !important; }
