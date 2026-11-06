@@ -56,6 +56,9 @@ html[data-theme="dark"] .autocomplete { background-color: rgba(60,64,67,0.97) !i
 html[data-theme="dark"] .autocomplete > .suggestion.selected, html[data-theme="dark"] .autocomplete > .suggestion:hover { background-color: #57503f !important; color: #f0d9a8 !important; box-shadow: inset 3px 0 0 #d4b78f !important; } /* highlight cursor lembut, selaras hover device list */
 html[data-theme="dark"] .wizard-dialog { background-color: #3c4043 !important; color: #e8eaed !important; border: 1px solid #5f6368 !important; box-shadow: 0 0 10px #000 !important; }
 html[data-theme="dark"] .progress { background-color: #3c4043 !important; }
+html[data-theme="dark"] .progress > .progress-bar { background-color: #d4b78f !important; }
+html[data-theme="dark"] { --status-green: 43 74% 72%; }
+html[data-theme="dark"] @keyframes pending-blink { 0% { background-color: hsl(43 74% 72% / 0.9); } to { background-color: transparent; } }
 html[data-theme="dark"] div.tab > div.tab_content { border-top: 1px solid #3c4043 !important; }
 html[data-theme="dark"] div.tab > ul > li { background-color: #43474e !important; border-top: 1px solid #3c4043 !important; border-left: 1px solid #3c4043 !important; border-right: 1px solid #3c4043 !important; }
 html[data-theme="dark"] div.tab > ul > li.active, html[data-theme="dark"] div.tab > ul > li:hover { background-color: #43474e !important; }
