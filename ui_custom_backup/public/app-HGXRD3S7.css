@@ -3,7 +3,7 @@ html{line-height:1.15;-ms-text-size-adjust:100%;-webkit-text-size-adjust:100%}bo
 
 /* ============================================================
    GenieACS Dark GOLD-SAND Incognito - Clean Final 2026-11-07
-   Background #202124 = Chrome Incognito tab, tetap aksen sand #d4b78f
+   Background #303134 = Chrome Incognito tab aktif (#35363A) yang disamakan, tetap aksen sand #d4b78f — tidak lagi hitam pekat #1a1a1a
    Merge dari semua revisi: dark-scoped + hover terang + filter +
    dot revert default + tab elegan + summon corel
    Tanpa duplikasi. Default dark via theme-toggle.js
@@ -12,19 +12,19 @@ html[data-theme="dark"] {
   color-scheme: dark;
   --color1: #3c4043;
   --color2: #5f6368;
-  --color3: #2e2f32;
+  --color3: #3a3d42;
   --color4: #d4b78f;
   --color5: #e8eaed;
   --disabled: #9a9a9a;
 }
-html[data-theme="dark"] body { background-color: #202124 !important; color: #e8eaed !important; /* Chrome Incognito #202124 */ }
+html[data-theme="dark"] body { background-color: #303134 !important; color: #e8eaed !important; /* Chrome Incognito tab aktif #35363A, diselaraskan #303134 */ }
 html[data-theme="dark"] body, html[data-theme="dark"] input, html[data-theme="dark"] button, html[data-theme="dark"] select, html[data-theme="dark"] option, html[data-theme="dark"] textarea { color: #e6e6e6 !important; }
-html[data-theme="dark"] #content-wrapper { background-color: #202124; }
-html[data-theme="dark"] #content { background-color: #202124; }
-html[data-theme="dark"] #header { background-color: #35363a !important; border-bottom: 1px solid #3c4043 !important; box-shadow: 0 1px 0 rgba(212,183,143,0.15) !important; } /* Incognito tab #35363A + aksen sand */
+html[data-theme="dark"] #content-wrapper { background-color: #303134; }
+html[data-theme="dark"] #content { background-color: #303134; }
+html[data-theme="dark"] #header { background-color: #3c3f44 !important; border-bottom: 1px solid #3c4043 !important; box-shadow: 0 1px 0 rgba(212,183,143,0.15) !important; } /* Incognito tab #35363A + aksen sand */
 html[data-theme="dark"] #header > .logo > .version { color: #bbb !important; }
-html[data-theme="dark"] #header > .drawer-wrapper > .drawer { background-color: rgba(53,54,58,0.97) !important; color: #e6e6e6 !important; border-bottom: 1px solid #3c4043 !important; border-left: 1px solid #333 !important; border-right: 1px solid #333 !important; box-shadow: 0 0 10px #000 !important; }
-html[data-theme="dark"] #header > .drawer-wrapper > .notifications-wrapper > .notification { background-color: rgba(53,54,58,0.97) !important; color: #e6e6e6 !important; border: 1px solid #3c4043 !important; }
+html[data-theme="dark"] #header > .drawer-wrapper > .drawer { background-color: rgba(60,63,68,0.97) !important; color: #e6e6e6 !important; border-bottom: 1px solid #3c4043 !important; border-left: 1px solid #333 !important; border-right: 1px solid #333 !important; box-shadow: 0 0 10px #000 !important; }
+html[data-theme="dark"] #header > .drawer-wrapper > .notifications-wrapper > .notification { background-color: rgba(60,63,68,0.97) !important; color: #e6e6e6 !important; border: 1px solid #3c4043 !important; }
 html[data-theme="dark"] #header > nav > ul > li { background-color: #2e2f32 !important; border-top: 1px solid #3c4043 !important; border-left: 1px solid #3c4043 !important; border-right: 1px solid #3c4043 !important; }
 html[data-theme="dark"] #header > nav > ul > li.active, html[data-theme="dark"] #header > nav > ul > li:hover { background-color: #3d3d3d !important; }
 html[data-theme="dark"] #header > nav > ul > li > a, html[data-theme="dark"] #header > nav > ul > li > a:visited, html[data-theme="dark"] #header > nav > ul > li > a:hover { color: #d4b78f !important; }
@@ -52,7 +52,7 @@ html[data-theme="dark"] .all-parameters > .parameter-list > table > tbody > tr >
 html[data-theme="dark"] .all-parameters > .parameter-list > table > tbody > tr:hover { background-color: #2e2f32 !important; }
 html[data-theme="dark"] .overlay-wrapper { background-color: rgba(0,0,0,0.6) !important; }
 html[data-theme="dark"] .overlay-wrapper > .overlay { background-color: #40392f !important; color: #e6e6e6 !important; border: 1px solid #3c4043 !important; box-shadow: 0 0 15px #000 !important; }
-html[data-theme="dark"] .autocomplete { background-color: rgba(53,54,58,0.97) !important; color: #e6e6e6 !important; border: 1px solid #3c4043 !important; box-shadow: 0 0 10px #000 !important; }
+html[data-theme="dark"] .autocomplete { background-color: rgba(60,63,68,0.97) !important; color: #e6e6e6 !important; border: 1px solid #3c4043 !important; box-shadow: 0 0 10px #000 !important; }
 html[data-theme="dark"] .autocomplete > .suggestion.selected, html[data-theme="dark"] .autocomplete > .suggestion:hover { background-color: #3d3d3d !important; }
 html[data-theme="dark"] .wizard-dialog { background-color: #40392f !important; color: #e6e6e6 !important; border: 1px solid #3c4043 !important; box-shadow: 0 0 10px #000 !important; }
 html[data-theme="dark"] .progress { background-color: #333 !important; }
@@ -64,10 +64,10 @@ html[data-theme="dark"] span.parameter-value > span:empty::before { color: #777 
 html[data-theme="dark"] span.tag { background-image: url('data:image/svg+xml;utf-8,<svg xmlns="http://www.w3.org/2000/svg" width="190" height="16"><path d="M6.59 15.42l-6-6a2 2 0 0 1 0-2.83l6-6A2 2 0 0 1 8 0h180a2 2 0 0 1 2 2v12a2 2 0 0 1-2 2H8a2 2 0 0 1-1.41-.58zM4.35 6.59A2 2 0 1 0 7.17 9.4 2 2 0 0 0 4.35 6.6z" fill="%234a4a4a"></path></svg>'); }
 html[data-theme="dark"] .legend { color: #e6e6e6; }
 html[data-theme="dark"] input::placeholder, html[data-theme="dark"] textarea::placeholder { color: #888 !important; }
-html[data-theme="dark"] ::selection { background: #d4b78f; color: #202124; }
+html[data-theme="dark"] ::selection { background: #d4b78f; color: #303134; }
 html[data-theme="dark"] ::-webkit-scrollbar { width: 12px; height: 12px; }
-html[data-theme="dark"] ::-webkit-scrollbar-track { background: #202124; }
-html[data-theme="dark"] ::-webkit-scrollbar-thumb { background: #3c4043; border-radius: 6px; border: 2px solid #202124; }
+html[data-theme="dark"] ::-webkit-scrollbar-track { background: #303134; }
+html[data-theme="dark"] ::-webkit-scrollbar-thumb { background: #3c4043; border-radius: 6px; border: 2px solid #303134; }
 html[data-theme="dark"] ::-webkit-scrollbar-thumb:hover { background: #555; }
 .theme-toggle-btn {
   cursor: pointer;
