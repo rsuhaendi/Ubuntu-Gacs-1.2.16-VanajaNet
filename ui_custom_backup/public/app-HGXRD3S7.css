@@ -24,7 +24,7 @@ html[data-theme="dark"] #content { background-color: #35383d; }
 html[data-theme="dark"] #header { background-color: #3c4043 !important; border-bottom: 1px solid #3c4043 !important; box-shadow: 0 2px 12px rgba(212,183,143,0.25) !important; } /* Incognito tab #35363A + aksen sand */
 html[data-theme="dark"] #header > .logo > .version { color: #bbb !important; }
 html[data-theme="dark"] #header > .drawer-wrapper > .drawer { background-color: rgba(60,64,67,0.97) !important; color: #e6e6e6 !important; border-bottom: 1px solid #3c4043 !important; border-left: 1px solid #333 !important; border-right: 1px solid #333 !important; box-shadow: 0 4px 20px rgba(212,183,143,0.22) !important; }
-html[data-theme="dark"] #header > .drawer-wrapper > .notifications-wrapper > .notification { background-color: rgba(60,64,67,0.97) !important; color: #e6e6e6 !important; border: 1px solid #3c4043 !important; }
+html[data-theme="dark"] #header > .drawer-wrapper > .notifications-wrapper > .notification { background-color: hsl(43 74% 72% / 0.9) !important; color: #000000 !important; border: 1px solid hsl(43 74% 72%) !important; }
 html[data-theme="dark"] #header > nav > ul > li { background-color: #43474e !important; border-top: 1px solid #3c4043 !important; border-left: 1px solid #3c4043 !important; border-right: 1px solid #3c4043 !important; }
 html[data-theme="dark"] #header > nav > ul > li.active, html[data-theme="dark"] #header > nav > ul > li:hover { background-color: #43474e !important; }
 html[data-theme="dark"] #header > nav > ul > li > a, html[data-theme="dark"] #header > nav > ul > li > a:visited, html[data-theme="dark"] #header > nav > ul > li > a:hover { color: #d4b78f !important; }
@@ -63,7 +63,7 @@ html[data-theme="dark"] .wizard-dialog { background-color: #3c4043 !important; c
 html[data-theme="dark"] .progress { background-color: #3c4043 !important; }
 html[data-theme="dark"] .progress > .progress-bar { background-color: #d4b78f !important; }
 html[data-theme="dark"] { --status-green: 43 74% 72%; --status-red: 0 80% 62%; --status-gray: 43 15% 60%; --status-yellow: 46 79% 70%; }
-html[data-theme="dark"] .notification { color: #35383d !important; font-weight: 600 !important; }
+html[data-theme="dark"] .notification { color: #000000 !important; font-weight: 600 !important; }
 html[data-theme="dark"] .notification.error { background-color: hsl(0 80% 62% / 0.9) !important; border-color: hsl(0 80% 62%) !important; }
 html[data-theme="dark"] .notification.success { background-color: hsl(43 74% 72% / 0.9) !important; border-color: hsl(43 74% 72%) !important; color: #000000 !important; box-shadow: 0 4px 20px rgba(212,183,143,0.28) !important; }
 html[data-theme="dark"] .notification.warning { background-color: hsl(46 79% 70% / 0.9) !important; border-color: hsl(46 79% 70%) !important; }
