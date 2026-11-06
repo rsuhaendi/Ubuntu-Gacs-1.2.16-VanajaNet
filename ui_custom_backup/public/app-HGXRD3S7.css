@@ -43,6 +43,8 @@ html[data-theme="dark"] .CodeMirror { background-color: #35383d !important; }
 html[data-theme="dark"] .CodeMirror-gutters { background-color: #35383d !important; border-color: #3c4043 !important; color: #999 !important; }
 html[data-theme="dark"] .CodeMirror-linenumber { color: #999 !important; }
 html[data-theme="dark"] input[type="button"], html[data-theme="dark"] button { color: #d4b78f !important; }
+html[data-theme="dark"] button.primary, html[data-theme="dark"] input[type="button"].primary { color: #f0d9a8 !important; }
+html[data-theme="dark"] button.critical, html[data-theme="dark"] input[type="button"].critical { color: #f0d9a8 !important; }
 html[data-theme="dark"] input[type="button"].primary, html[data-theme="dark"] button.primary { border: 1px solid #3c4043 !important; background-color: #43474e !important; }
 html[data-theme="dark"] input[type="button"].critical, html[data-theme="dark"] button.critical { border: 1px solid #3c4043 !important; background-color: #43474e !important; color: #ff8a80 !important; }
 html[data-theme="dark"] input[type="button"]:hover:enabled, html[data-theme="dark"] button:hover:enabled { background-color: #d4b78f !important; color: #35383d !important; }
