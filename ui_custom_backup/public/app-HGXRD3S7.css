@@ -50,7 +50,7 @@ html[data-theme="dark"] .pie-chart > svg > path { stroke: #3c4043 !important; }
 html[data-theme="dark"] .pie-chart .legend .color { border: 1px solid #3c4043 !important; }
 html[data-theme="dark"] .all-parameters > .parameter-list > table > tbody > tr > td { border-bottom: 1px dotted #3c4043 !important; }
 html[data-theme="dark"] .all-parameters > .parameter-list > table > tbody > tr:hover { background-color: #43474e !important; }
-html[data-theme="dark"] .overlay-wrapper { background-color: rgba(0,0,0,0.6) !important; }
+html[data-theme="dark"] .overlay-wrapper { background-color: rgba(0,0,0,0) !important; }
 html[data-theme="dark"] .overlay-wrapper > .overlay { background-color: #3c4043 !important; color: #e8eaed !important; border: 1px solid #5f6368 !important; box-shadow: 0 6px 24px rgba(212,183,143,0.28) !important; }
 html[data-theme="dark"] .autocomplete { background-color: rgba(60,64,67,0.97) !important; color: #e6e6e6 !important; border: 1px solid #3c4043 !important; box-shadow: 0 4px 20px rgba(212,183,143,0.22) !important; }
 html[data-theme="dark"] .autocomplete > .suggestion.selected, html[data-theme="dark"] .autocomplete > .suggestion:hover { background-color: #57503f !important; color: #f0d9a8 !important; box-shadow: inset 3px 0 0 #d4b78f !important; } /* highlight cursor lembut, selaras hover device list */
