@@ -120,7 +120,7 @@ span.inform > *:not(.overview-dot) { display: inline !important; }
 /* Tab elegan ala bawaan */
 html[data-theme="dark"] div.tab > ul > li,
 html[data-theme="dark"] #header > nav > ul > li {
-  background-color: rgba(212,183,143,0.12) !important;
+  background-color: rgba(212,183,143,0.18) !important;
   border-color: rgba(212,183,143,0.22) !important;
   border-top-left-radius: 6px !important;
   border-top-right-radius: 6px !important;
@@ -128,12 +128,12 @@ html[data-theme="dark"] #header > nav > ul > li {
 }
 html[data-theme="dark"] div.tab > ul > li:hover,
 html[data-theme="dark"] #header > nav > ul > li:hover {
-  background-color: rgba(212,183,143,0.22) !important;
+  background-color: rgba(212,183,143,0.28) !important;
 }
 html[data-theme="dark"] div.tab > ul > li.active,
 html[data-theme="dark"] #header > nav > ul > li.active {
-  background-color: #3c4043 !important;
-  border-color: rgba(212,183,143,0.30) !important;
+  background-color: #43474e !important;
+  border-color: rgba(212,183,143,0.35) !important;
 }
 html[data-theme="dark"] div.tab > ul > li.active > a,
 html[data-theme="dark"] div.tab > ul > li:hover > a,
