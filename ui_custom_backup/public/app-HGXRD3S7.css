@@ -61,7 +61,9 @@ html[data-theme="dark"] div.tab > ul > li { background-color: #43474e !important
 html[data-theme="dark"] div.tab > ul > li.active, html[data-theme="dark"] div.tab > ul > li:hover { background-color: #43474e !important; }
 html[data-theme="dark"] div.tab > ul > li > a, html[data-theme="dark"] div.tab > ul > li > a:visited, html[data-theme="dark"] div.tab > ul > li > a:hover { color: #d4b78f !important; }
 html[data-theme="dark"] span.parameter-value > span:empty::before { color: #777 !important; }
-html[data-theme="dark"] span.tag { background-image: url('data:image/svg+xml;utf-8,<svg xmlns="http://www.w3.org/2000/svg" width="190" height="16"><path d="M6.59 15.42l-6-6a2 2 0 0 1 0-2.83l6-6A2 2 0 0 1 8 0h180a2 2 0 0 1 2 2v12a2 2 0 0 1-2 2H8a2 2 0 0 1-1.41-.58zM4.35 6.59A2 2 0 1 0 7.17 9.4 2 2 0 0 0 4.35 6.6z" fill="%23d4b78f"></path></svg>') !important; color: #35383d !important; } /* tag gold fill bawaan, dot & + bawaan via background-image, bukan background-color */
+html[data-theme="dark"] span.tag { background-image: url('data:image/svg+xml;utf-8,<svg xmlns="http://www.w3.org/2000/svg" width="190" height="16"><path d="M6.59 15.42l-6-6a2 2 0 0 1 0-2.83l6-6A2 2 0 0 1 8 0h180a2 2 0 0 1 2 2v12a2 2 0 0 1-2 2H8a2 2 0 0 1-1.41-.58zM4.35 6.59A2 2 0 1 0 7.17 9.4 2 2 0 0 0 4.35 6.6z" fill="%23d4b78f"></path></svg>') !important; color: #35383d !important; }
+html[data-theme="dark"] span.tag button { color: #35383d !important; } /* tombol +/x di dalam tag: teks gelap agar terlihat di atas gold */
+html[data-theme="dark"] span.tag button:hover { background: none !important; color: #35383d !important; }
 html[data-theme="dark"] .legend { color: #e6e6e6; }
 html[data-theme="dark"] input::placeholder, html[data-theme="dark"] textarea::placeholder { color: #888 !important; }
 html[data-theme="dark"] ::selection { background: #d4b78f; color: #35383d; }
