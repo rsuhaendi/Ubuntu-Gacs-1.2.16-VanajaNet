@@ -21,7 +21,7 @@ html[data-theme="dark"] body { background-color: #35383d !important; color: #e8e
 html[data-theme="dark"] body, html[data-theme="dark"] input, html[data-theme="dark"] button, html[data-theme="dark"] select, html[data-theme="dark"] option, html[data-theme="dark"] textarea { color: #e6e6e6 !important; }
 html[data-theme="dark"] #content-wrapper { background-color: #35383d; }
 html[data-theme="dark"] #content { background-color: #35383d; }
-html[data-theme="dark"] #header { background-color: #3c4043 !important; border-bottom: 1px solid #3c4043 !important; box-shadow: 0 1px 0 rgba(212,183,143,0.15) !important; } /* Incognito tab #35363A + aksen sand */
+html[data-theme="dark"] #header { background-color: #3c4043 !important; border-bottom: 1px solid #3c4043 !important; box-shadow: 0 2px 12px rgba(212,183,143,0.25) !important; } /* Incognito tab #35363A + aksen sand */
 html[data-theme="dark"] #header > .logo > .version { color: #bbb !important; }
 html[data-theme="dark"] #header > .drawer-wrapper > .drawer { background-color: rgba(60,64,67,0.97) !important; color: #e6e6e6 !important; border-bottom: 1px solid #3c4043 !important; border-left: 1px solid #333 !important; border-right: 1px solid #333 !important; box-shadow: 0 4px 20px rgba(212,183,143,0.22) !important; }
 html[data-theme="dark"] #header > .drawer-wrapper > .notifications-wrapper > .notification { background-color: rgba(60,64,67,0.97) !important; color: #e6e6e6 !important; border: 1px solid #3c4043 !important; }
@@ -164,14 +164,14 @@ html[data-theme="dark"] #header > nav > ul > li > a { color: #d4b78f !important;
   outline: 2px solid #f0d9a8 !important;
   outline-offset: 1px !important;
   letter-spacing: 0.02em !important;
-  box-shadow: 0 2px 8px rgba(0,0,0,0.5), inset 0 1px 0 rgba(255,255,255,0.5) !important;
+  box-shadow: 0 4px 16px rgba(212,183,143,0.35), inset 0 1px 0 rgba(255,255,255,0.5) !important;
 }
 .summon-button:hover, button.summon-button:hover {
   background: #f0d9a8 !important;
   color: #35383d !important;
   outline-color: #ffffff !important;
   border-color: #f0d9a8 !important;
-  box-shadow: 0 2px 6px rgba(0,0,0,0.4), inset 0 1px 0 rgba(255,255,255,0.5) !important;
+  box-shadow: 0 4px 14px rgba(212,183,143,0.35), inset 0 1px 0 rgba(255,255,255,0.5) !important;
 }
 .summon-button:active, button.summon-button:active { transform: scale(0.98) !important; }
 span.inform:not(:has(.overview-dot)) { display: inline !important; }
