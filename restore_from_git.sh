@@ -62,6 +62,24 @@ if [ -f "$BASE_DIR/files/fs_chunks_backup.json" ]; then
   mongoimport --db=$DB_NAME --collection=fs.chunks --file="$BASE_DIR/files/fs_chunks_backup.json" --jsonArray --drop
 fi
 
+# 9. Restore CSS / JS / gambar UI ke public GenieACS
+# File backup ada di: $BASE_DIR/ui_custom_backup/public/
+UI_SRC="$BASE_DIR/ui_custom_backup/public"
+UI_DST="/usr/lib/node_modules/genieacs/public"
+if [ -d "$UI_SRC" ]; then
+  echo "Restoring UI CSS/JS/gambar..."
+  mkdir -p "$UI_DST/img"
+  if [ -f "$UI_SRC/app-HGXRD3S7.css" ]; then
+    cp -f "$UI_SRC/app-HGXRD3S7.css" "$UI_DST/app-HGXRD3S7.css"
+  fi
+  if [ -f "$UI_SRC/theme-toggle.js" ]; then
+    cp -f "$UI_SRC/theme-toggle.js" "$UI_DST/theme-toggle.js"
+  fi
+  if [ -d "$UI_SRC/img" ]; then
+    cp -af "$UI_SRC/img/." "$UI_DST/img/"
+  fi
+fi
+
 echo "=== Restarting GenieACS Services ==="
 systemctl restart genieacs-cwmp genieacs-nbi genieacs-fs genieacs-ui
 echo "=== Selesai! Silakan refresh Web UI GenieACS dan cek tab Admin ==="
