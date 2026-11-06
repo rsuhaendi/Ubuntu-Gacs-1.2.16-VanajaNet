@@ -73,7 +73,7 @@ html[data-theme="dark"] .drawer > .queue > .fault { background-color: hsl(0 80% 
 html[data-theme="dark"] .drawer > .queue > .stale { background-color: hsl(43 15% 60% / 0.9) !important; box-shadow: none !important; border: 1px solid #d4b78f !important; }
 html[data-theme="dark"] .drawer > .queue > .pending { background-color: hsl(43 74% 72% / 0.9) !important; box-shadow: none !important; border: 1px solid #d4b78f !important; }
 html[data-theme="dark"] @keyframes pending-blink { 0% { background-color: hsl(43 74% 72% / 0.9); } to { background-color: transparent; } }
-html[data-theme="dark"] div.tab > div.tab_content { border-top: 1px solid #d4b78f !important; background-color: #43474e !important; box-shadow: none !important; }
+html[data-theme="dark"] div.tab > div.tab_content { border-top: 1px solid #3c4043 !important; background-color: #43474e !important; box-shadow: none !important; }
 html[data-theme="dark"] div.tab > ul > li { background-color: rgba(212,183,143,0.12) !important; border-top: 1px solid rgba(212,183,143,0.22) !important; border-left: 1px solid rgba(212,183,143,0.22) !important; border-right: 1px solid rgba(212,183,143,0.22) !important; border-bottom: none !important; box-shadow: none !important; }
 html[data-theme="dark"] div.tab > ul > li.active, html[data-theme="dark"] div.tab > ul > li:hover { background-color: #35383d !important; }
 html[data-theme="dark"] div.tab > ul > li > a, html[data-theme="dark"] div.tab > ul > li > a:visited, html[data-theme="dark"] div.tab > ul > li > a:hover { color: #d4b78f !important; }
@@ -143,8 +143,8 @@ span.inform > *:not(.overview-dot) { display: inline !important; }
 
 
 /* Garis horizontal selaras px: tab duduk di atas garis, nav overlap -1px seperti bawaan */
-html[data-theme="dark"] #header > nav { bottom: -1px !important; }
-html[data-theme="dark"] div.tab > ul > li, html[data-theme="dark"] #header > nav > ul > li { margin-bottom: -1px !important; }
+html[data-theme="dark"] #header > nav { bottom: 0 !important; }
+html[data-theme="dark"] div.tab > ul > li, html[data-theme="dark"] #header > nav > ul > li { margin-bottom: 0 !important; }
 
 /* Tab elegan ala bawaan */
 html[data-theme="dark"] div.tab > ul > li,
