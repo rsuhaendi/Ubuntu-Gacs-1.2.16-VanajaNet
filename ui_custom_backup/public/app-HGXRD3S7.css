@@ -21,7 +21,7 @@ html[data-theme="dark"] body { background-color: #35383d !important; color: #e8e
 html[data-theme="dark"] body, html[data-theme="dark"] input, html[data-theme="dark"] button, html[data-theme="dark"] select, html[data-theme="dark"] option, html[data-theme="dark"] textarea { color: #e6e6e6 !important; }
 html[data-theme="dark"] #content-wrapper { background-color: #35383d; }
 html[data-theme="dark"] #content { background-color: #35383d; }
-html[data-theme="dark"] #header { background-color: #3c4043 !important; border-bottom: 1px solid #d4b78f !important; box-shadow: none !important; } /* border gold, tanpa shadow garis membentang */
+html[data-theme="dark"] #header { background-color: #3c4043 !important; border-bottom: 1px solid #3c4043 !important; box-shadow: none !important; } /* border abu, garis membentang ikut border tab */
 html[data-theme="dark"] #header > .logo > .version { color: #bbb !important; }
 html[data-theme="dark"] #header > .drawer-wrapper > .drawer { background-color: rgba(60,64,67,0.97) !important; color: #e6e6e6 !important; border-bottom: 1px solid #d4b78f !important; border-left: 1px solid #d4b78f !important; border-right: 1px solid #d4b78f !important; box-shadow: none !important; }
 html[data-theme="dark"] #header > .drawer-wrapper > .notifications-wrapper > .notification { background-color: hsl(43 74% 72% / 0.9) !important; color: #000000 !important; border: 1px solid hsl(43 74% 72%) !important; }
@@ -73,7 +73,7 @@ html[data-theme="dark"] .drawer > .queue > .fault { background-color: hsl(0 80% 
 html[data-theme="dark"] .drawer > .queue > .stale { background-color: hsl(43 15% 60% / 0.9) !important; box-shadow: none !important; border: 1px solid #d4b78f !important; }
 html[data-theme="dark"] .drawer > .queue > .pending { background-color: hsl(43 74% 72% / 0.9) !important; box-shadow: none !important; border: 1px solid #d4b78f !important; }
 html[data-theme="dark"] @keyframes pending-blink { 0% { background-color: hsl(43 74% 72% / 0.9); } to { background-color: transparent; } }
-html[data-theme="dark"] div.tab > div.tab_content { border-top: 1px solid #d4b78f !important; box-shadow: none !important; }
+html[data-theme="dark"] div.tab > div.tab_content { border-top: 1px solid #3c4043 !important; border-top: none !important; box-shadow: none !important; }
 html[data-theme="dark"] div.tab > ul > li { background-color: #43474e !important; border-top: 1px solid #d4b78f !important; border-left: 1px solid #d4b78f !important; border-right: 1px solid #d4b78f !important; box-shadow: none !important; }
 html[data-theme="dark"] div.tab > ul > li.active, html[data-theme="dark"] div.tab > ul > li:hover { background-color: #43474e !important; }
 html[data-theme="dark"] div.tab > ul > li > a, html[data-theme="dark"] div.tab > ul > li > a:visited, html[data-theme="dark"] div.tab > ul > li > a:hover { color: #d4b78f !important; }
@@ -140,11 +140,16 @@ span.inform { display: inline !important; }
 .overview-dot > svg { margin-bottom: -0.125em; margin-left: 0.2em; margin-right: 0.2em; }
 span.inform > *:not(.overview-dot) { display: inline !important; }
 
+
+/* Garis tab sync: garis bawah tab device & header menyatu, bukan beda px */
+html[data-theme="dark"] div.tab > div.tab_content { border-top: none !important; }
+html[data-theme="dark"] div.tab > ul > li, html[data-theme="dark"] #header > nav > ul > li { border-bottom: 1px solid #3c4043 !important; }
+
 /* Tab elegan ala bawaan */
 html[data-theme="dark"] div.tab > ul > li,
 html[data-theme="dark"] #header > nav > ul > li {
   background-color: rgba(212,183,143,0.18) !important;
-  border-color: rgba(212,183,143,0.22) !important;
+  border-color: #3c4043 !important;
   border-top-left-radius: 6px !important;
   border-top-right-radius: 6px !important;
   box-shadow: none !important;
