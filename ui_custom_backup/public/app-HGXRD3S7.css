@@ -62,14 +62,14 @@ html[data-theme="dark"] .autocomplete > .suggestion.selected, html[data-theme="d
 html[data-theme="dark"] .wizard-dialog { background-color: #3c4043 !important; color: #e8eaed !important; border: 1px solid #5f6368 !important; box-shadow: 0 4px 20px rgba(212,183,143,0.22) !important; }
 html[data-theme="dark"] .progress { background-color: #3c4043 !important; }
 html[data-theme="dark"] .progress > .progress-bar { background-color: #d4b78f !important; }
-html[data-theme="dark"] { --status-green: 43 74% 72%; --status-red: 10 75% 68%; --status-gray: 43 15% 60%; --status-yellow: 43 85% 62%; }
+html[data-theme="dark"] { --status-green: 43 74% 72%; --status-red: 0 80% 62%; --status-gray: 43 15% 60%; --status-yellow: 46 79% 70%; }
 html[data-theme="dark"] .notification { color: #35383d !important; font-weight: 600 !important; }
-html[data-theme="dark"] .notification.error { background-color: hsl(10 75% 68% / 0.9) !important; border-color: hsl(10 75% 68%) !important; }
+html[data-theme="dark"] .notification.error { background-color: hsl(0 80% 62% / 0.9) !important; border-color: hsl(0 80% 62%) !important; }
 html[data-theme="dark"] .notification.success { background-color: hsl(43 74% 72% / 0.9) !important; border-color: hsl(43 74% 72%) !important; }
-html[data-theme="dark"] .notification.warning { background-color: hsl(43 85% 62% / 0.9) !important; border-color: hsl(43 85% 62%) !important; }
-html[data-theme="dark"] .drawer > .status > .fault.active { background-color: hsl(10 75% 68% / 0.9) !important; }
+html[data-theme="dark"] .notification.warning { background-color: hsl(46 79% 70% / 0.9) !important; border-color: hsl(46 79% 70%) !important; }
+html[data-theme="dark"] .drawer > .status > .fault.active { background-color: hsl(0 80% 62% / 0.9) !important; }
 html[data-theme="dark"] .drawer > .status > .stale.active { background-color: hsl(43 15% 60% / 0.9) !important; }
-html[data-theme="dark"] .drawer > .queue > .fault { background-color: hsl(10 75% 68% / 0.9) !important; }
+html[data-theme="dark"] .drawer > .queue > .fault { background-color: hsl(0 80% 62% / 0.9) !important; }
 html[data-theme="dark"] .drawer > .queue > .stale { background-color: hsl(43 15% 60% / 0.9) !important; }
 html[data-theme="dark"] .drawer > .queue > .pending { background-color: hsl(43 74% 72% / 0.9) !important; }
 html[data-theme="dark"] @keyframes pending-blink { 0% { background-color: hsl(43 74% 72% / 0.9); } to { background-color: transparent; } }
@@ -127,6 +127,7 @@ html[data-theme="dark"] .filter > input::placeholder { color: #b8b0a0 !important
 html[data-theme="dark"] textarea, html[data-theme="dark"] select, html[data-theme="dark"] input { border-color: #5f6368 !important; }
 html[data-theme="dark"] textarea:focus, html[data-theme="dark"] select:focus, html[data-theme="dark"] input:focus { border-color: #d4b78f !important; }
 
+/* Dot & fault merah kembali: merah/kuning bawaan harus tetap beda dari gold */
 /* Dot revert default GenieACS (final, hapus 3D/gloss) */
 .overview-dot { position: static !important; display: inline !important; width: auto !important; height: auto !important; margin: 0 !important; flex: none !important; }
 .overview-dot > svg { width: auto !important; height: auto !important; background: none !important; box-shadow: none !important; filter: none !important; border-radius: 0 !important; }
