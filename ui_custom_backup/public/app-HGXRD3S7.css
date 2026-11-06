@@ -145,23 +145,26 @@ html[data-theme="dark"] #header > nav > ul > li:hover > a {
 html[data-theme="dark"] div.tab > ul > li > a,
 html[data-theme="dark"] #header > nav > ul > li > a { color: #d4b78f !important; }
 
-/* Summon corel: inline-block, #40392f, bukan pill */
+/* Summon Gold Solid Elegan: kontras jelas di atas #303134 */
 .summon-button, button.summon-button { display: inline-block !important; width: auto !important; max-width: none !important; }
 .parameter-list > .summon-button, .summon-button {
   display: inline-block !important;
   padding: 6px 14px !important;
-  border-radius: 4px !important;
-  border: 1px solid #6b6150 !important;
-  background: #40392f !important;
-  color: #f0d9a8 !important;
-  font-weight: 500 !important;
-  box-shadow: none !important;
+  border-radius: 20px !important;
+  border: 1px solid #d4b78f !important;
+  background: #d4b78f !important;
+  color: #303134 !important;
+  font-weight: 600 !important;
+  letter-spacing: 0.02em !important;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.35), inset 0 1px 0 rgba(255,255,255,0.35) !important;
 }
 .summon-button:hover, button.summon-button:hover {
-  background: #57503f !important;
-  color: #ffffff !important;
-  border-color: #d4b78f !important;
+  background: #f0d9a8 !important;
+  color: #303134 !important;
+  border-color: #f0d9a8 !important;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.4), inset 0 1px 0 rgba(255,255,255,0.5) !important;
 }
+.summon-button:active, button.summon-button:active { transform: scale(0.98) !important; }
 span.inform:not(:has(.overview-dot)) { display: inline !important; }
 span.inform:not(:has(.overview-dot)) > button { display: inline-block !important; }
 button { display: inline-block !important; }
