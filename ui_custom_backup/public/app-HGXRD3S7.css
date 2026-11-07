@@ -96,20 +96,29 @@ html[data-theme="dark"] ::-webkit-scrollbar-thumb { background: #3c4043; border-
 html[data-theme="dark"] ::-webkit-scrollbar-thumb:hover { background: #555; }
 .theme-toggle-btn {
   cursor: pointer;
-  font-size: 16px;
-  line-height: 1;
-  padding: 6px 10px;
-  margin-right: 8px;
-  border-radius: 20px;
-  border: 1.5px solid var(--color4);
+  font-size: 12px;
+  line-height: 1.4;
+  width: auto;
+  height: auto;
+  padding: 2px 10px;
+  margin-right: 4px;
+  border-radius: 4px;
+  border: 1px solid color-mix(in srgb, var(--color4) 55%, transparent);
   background: var(--color3);
-  background: color-mix(in srgb, var(--color4) 15%, var(--color3));
+  background: color-mix(in srgb, var(--color4) 8%, var(--color3));
   color: var(--color4);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 4px;
+  white-space: nowrap;
   vertical-align: middle;
-  transition: background-color 0.2s, color 0.2s, transform 0.15s;
+  box-sizing: border-box;
+  flex-shrink: 0;
+  transition: background-color 0.2s, color 0.2s, border-color 0.2s, transform 0.15s;
 }
-.theme-toggle-btn:hover { background: var(--color4); color: var(--color3); transform: scale(1.08); }
-.theme-toggle-btn:active { transform: scale(0.95); }
+.theme-toggle-btn:hover { background: color-mix(in srgb, var(--color4) 22%, var(--color3)); border-color: var(--color4); }
+.theme-toggle-btn:active { transform: scale(0.98); }
 
 /* Hover terang: row/tab/sidemenu rgba(255, 255, 255, 0.08), aksen gold */
 html[data-theme="dark"] table.table.highlight > tbody > tr:hover { background-color: rgba(255, 255, 255, 0.08) !important; box-shadow: inset 3px 0 0 #d4b78f; }

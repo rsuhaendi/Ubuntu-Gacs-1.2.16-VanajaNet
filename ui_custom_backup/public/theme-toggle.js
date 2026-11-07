@@ -10,7 +10,7 @@
     try { localStorage.setItem(KEY, t); } catch (e) {}
     var btn = document.querySelector(".theme-toggle-btn");
     if (btn) {
-      btn.textContent = (t === "dark") ? "\u2600\uFE0F" : "\uD83C\uDF19";
+      btn.textContent = (t === "dark") ? "\u2600\uFE0F Change to light mode" : "\uD83C\uDF19 Change to dark mode";
       btn.title = (t === "dark") ? "Berpindah ke Light Mode" : "Berpindah ke Dark Mode";
       btn.setAttribute("aria-label", btn.title);
     }
@@ -23,7 +23,7 @@
     btn.type = "button";
     btn.className = "theme-toggle-btn";
     var t = theme();
-    btn.textContent = (t === "dark") ? "\u2600\uFE0F" : "\uD83C\uDF19";
+    btn.textContent = (t === "dark") ? "\u2600\uFE0F Change to light mode" : "\uD83C\uDF19 Change to dark mode";
     btn.title = (t === "dark") ? "Berpindah ke Light Mode" : "Berpindah ke Dark Mode";
     btn.setAttribute("aria-label", btn.title);
     btn.onclick = function () {
