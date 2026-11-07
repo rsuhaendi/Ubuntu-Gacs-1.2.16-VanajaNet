@@ -58,7 +58,7 @@ html[data-theme="dark"] .all-parameters > .parameter-list > table > tbody > tr:h
 html[data-theme="dark"] .overlay-wrapper { background-color: rgba(0,0,0,0.6) !important; }
 html[data-theme="dark"] .overlay-wrapper > .overlay { background-color: #3c4043 !important; color: #e8eaed !important; border: 1px solid #5f6368 !important; box-shadow: 0 6px 24px rgba(212,183,143,0.28) !important; }
 html[data-theme="dark"] .autocomplete { background-color: rgba(60,64,67,0.97) !important; color: #e6e6e6 !important; border: 1px solid #3c4043 !important; box-shadow: 0 4px 20px rgba(212,183,143,0.22) !important; }
-html[data-theme="dark"] .autocomplete > .suggestion.selected, html[data-theme="dark"] .autocomplete > .suggestion:hover { background-color: #57503f !important; color: #f0d9a8 !important; box-shadow: inset 3px 0 0 #d4b78f !important; } /* highlight cursor lembut, selaras hover device list */
+html[data-theme="dark"] .autocomplete > .suggestion.selected, html[data-theme="dark"] .autocomplete > .suggestion:hover { background-color: rgba(255, 255, 255, 0.08) !important; color: #f0d9a8 !important; box-shadow: inset 3px 0 0 #d4b78f !important; } /* highlight cursor lembut, selaras hover device list */
 html[data-theme="dark"] .wizard-dialog { background-color: #3c4043 !important; color: #e8eaed !important; border: 1px solid #5f6368 !important; box-shadow: 0 4px 20px rgba(212,183,143,0.22) !important; }
 html[data-theme="dark"] .progress { background-color: #3c4043 !important; }
 html[data-theme="dark"] .progress > .progress-bar { background-color: #d4b78f !important; }
@@ -98,8 +98,9 @@ html[data-theme="dark"] ::-webkit-scrollbar-thumb:hover { background: #555; }
   padding: 6px 10px;
   margin-right: 8px;
   border-radius: 20px;
-  border: 1px solid var(--color1);
+  border: 1.5px solid var(--color4);
   background: var(--color3);
+  background: color-mix(in srgb, var(--color4) 15%, var(--color3));
   color: var(--color4);
   vertical-align: middle;
   transition: background-color 0.2s, color 0.2s, transform 0.15s;
@@ -107,15 +108,15 @@ html[data-theme="dark"] ::-webkit-scrollbar-thumb:hover { background: #555; }
 .theme-toggle-btn:hover { background: var(--color4); color: var(--color3); transform: scale(1.08); }
 .theme-toggle-btn:active { transform: scale(0.95); }
 
-/* Hover terang: row/tab/sidemenu #57503f, aksen gold */
-html[data-theme="dark"] table.table.highlight > tbody > tr:hover { background-color: #57503f !important; box-shadow: inset 3px 0 0 #d4b78f; }
+/* Hover terang: row/tab/sidemenu rgba(255, 255, 255, 0.08), aksen gold */
+html[data-theme="dark"] table.table.highlight > tbody > tr:hover { background-color: rgba(255, 255, 255, 0.08) !important; box-shadow: inset 3px 0 0 #d4b78f; }
 html[data-theme="dark"] table.table.highlight > tbody > tr:hover > td { color: #ffffff !important; }
 html[data-theme="dark"] table.table.highlight > tbody > tr:hover > td a { color: #ffffff !important; background: transparent !important; text-decoration: underline; }
-html[data-theme="dark"] .all-parameters > .parameter-list > table > tbody > tr:hover { background-color: #57503f !important; box-shadow: inset 3px 0 0 #d4b78f; }
+html[data-theme="dark"] .all-parameters > .parameter-list > table > tbody > tr:hover { background-color: rgba(255, 255, 255, 0.08) !important; box-shadow: inset 3px 0 0 #d4b78f; }
 html[data-theme="dark"] .all-parameters > .parameter-list > table > tbody > tr:hover > td { color: #ffffff !important; }
-html[data-theme="dark"] div.tab > ul > li:hover { background-color: #57503f !important; }
-html[data-theme="dark"] #header > nav > ul > li:hover { background-color: #57503f !important; }
-html[data-theme="dark"] #side-menu > ul > li > a:hover { background-color: #57503f !important; color: #ffffff !important; }
+html[data-theme="dark"] div.tab > ul > li:hover { background-color: rgba(255, 255, 255, 0.08) !important; }
+html[data-theme="dark"] #header > nav > ul > li:hover { background-color: rgba(255, 255, 255, 0.08) !important; }
+html[data-theme="dark"] #side-menu > ul > li > a:hover { background-color: rgba(255, 255, 255, 0.08) !important; color: #ffffff !important; }
 
 /* Filter + input border terang */
 html[data-theme="dark"] .filter > input {

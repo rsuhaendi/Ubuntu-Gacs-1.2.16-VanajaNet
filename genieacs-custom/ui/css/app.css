@@ -932,8 +932,9 @@ html[data-theme="dark"] ::-webkit-scrollbar-thumb:hover { background: #555; }
   padding: 6px 10px;
   margin-right: 8px;
   border-radius: 20px;
-  border: 1px solid var(--color1);
+  border: 1.5px solid var(--color4);
   background: var(--color3);
+  background: color-mix(in srgb, var(--color4) 15%, var(--color3));
   color: var(--color4);
   vertical-align: middle;
   transition: background-color 0.2s, color 0.2s, transform 0.15s;
@@ -942,7 +943,7 @@ html[data-theme="dark"] ::-webkit-scrollbar-thumb:hover { background: #555; }
 .theme-toggle-btn:active { transform: scale(0.95); }
 
 /* Hover terang: row/tab/sidemenu #57503f, aksen gold */
-html[data-theme="dark"] table.table.highlight > tbody > tr:hover { background-color: #57503f !important; box-shadow: inset 3px 0 0 #d4b78f; }
+html[data-theme="dark"] table.table.highlight > tbody > tr:hover { background-color: rgba(255, 255, 255, 0.08) !important; box-shadow: inset 3px 0 0 #d4b78f; }
 html[data-theme="dark"] table.table.highlight > tbody > tr:hover > td { color: #ffffff !important; }
 html[data-theme="dark"] table.table.highlight > tbody > tr:hover > td a { color: #ffffff !important; background: transparent !important; text-decoration: underline; }
 html[data-theme="dark"] .all-parameters > .parameter-list > table > tbody > tr:hover { background-color: #57503f !important; box-shadow: inset 3px 0 0 #d4b78f; }
@@ -1124,8 +1125,9 @@ html[data-theme="dark"] ::-webkit-scrollbar-thumb:hover { background: #555; }
   padding: 6px 10px;
   margin-right: 8px;
   border-radius: 20px;
-  border: 1px solid var(--color1);
+  border: 1.5px solid var(--color4);
   background: var(--color3);
+  background: color-mix(in srgb, var(--color4) 15%, var(--color3));
   color: var(--color4);
   vertical-align: middle;
   transition: background-color 0.2s, color 0.2s, transform 0.15s;
@@ -1134,7 +1136,7 @@ html[data-theme="dark"] ::-webkit-scrollbar-thumb:hover { background: #555; }
 .theme-toggle-btn:active { transform: scale(0.95); }
 
 /* Hover terang: row/tab/sidemenu #57503f, aksen gold */
-html[data-theme="dark"] table.table.highlight > tbody > tr:hover { background-color: #57503f !important; box-shadow: inset 3px 0 0 #d4b78f; }
+html[data-theme="dark"] table.table.highlight > tbody > tr:hover { background-color: rgba(255, 255, 255, 0.08) !important; box-shadow: inset 3px 0 0 #d4b78f; }
 html[data-theme="dark"] table.table.highlight > tbody > tr:hover > td { color: #ffffff !important; }
 html[data-theme="dark"] table.table.highlight > tbody > tr:hover > td a { color: #ffffff !important; background: transparent !important; text-decoration: underline; }
 html[data-theme="dark"] .all-parameters > .parameter-list > table > tbody > tr:hover { background-color: #57503f !important; box-shadow: inset 3px 0 0 #d4b78f; }
