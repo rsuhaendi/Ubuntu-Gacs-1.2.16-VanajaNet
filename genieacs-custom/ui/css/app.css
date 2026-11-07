@@ -896,9 +896,13 @@ html[data-theme="dark"] table.table th { color: #d4b78f !important; border-botto
 html[data-theme="dark"] table.table.highlight > tbody > tr > td { border-bottom: 1px dotted #3c4043 !important; }
 html[data-theme="dark"] table.table.highlight > tbody > tr:hover { background-color: #43474e !important; }
 html[data-theme="dark"] .CodeMirror, html[data-theme="dark"] textarea, html[data-theme="dark"] select, html[data-theme="dark"] input { border: 1px solid #3c4043 !important; background-color: #43474e !important; color: #e6e6e6 !important; }
-html[data-theme="dark"] .CodeMirror { background-color: #35383d !important; }
-html[data-theme="dark"] .CodeMirror-gutters { background-color: #35383d !important; border-color: #3c4043 !important; color: #999 !important; }
+html[data-theme="dark"] .CodeMirror { background-color: #fff !important; color: #000 !important; }
+html[data-theme="dark"] .CodeMirror-gutters { background-color: #f7f7f7 !important; border-color: #ddd !important; color: #999 !important; }
 html[data-theme="dark"] .CodeMirror-linenumber { color: #999 !important; }
+html[data-theme="dark"] .CodeMirror-cursor { border-left-color: #000 !important; }
+html[data-theme="dark"] .CodeMirror-selected { background: #d9d9d9 !important; }
+html[data-theme="dark"] .CodeMirror-focused .CodeMirror-selected { background: #d7d4f0 !important; }
+html[data-theme="dark"] .CodeMirror-focused { background-color: #fff !important; }
 html[data-theme="dark"] input[type="button"], html[data-theme="dark"] button { color: #d4b78f !important; }
 html[data-theme="dark"] input[type="button"]:disabled, html[data-theme="dark"] button:disabled { color: #9a9a9a !important; opacity: 0.55; cursor: not-allowed !important; }
 html[data-theme="dark"] input[type="button"].primary, html[data-theme="dark"] button.primary { border: 1px solid #3c4043 !important; background-color: #43474e !important; }
@@ -1070,9 +1074,13 @@ html[data-theme="dark"] table.table th { color: #d4b78f !important; border-botto
 html[data-theme="dark"] table.table.highlight > tbody > tr > td { border-bottom: 1px dotted #3c4043 !important; }
 html[data-theme="dark"] table.table.highlight > tbody > tr:hover { background-color: #43474e !important; }
 html[data-theme="dark"] .CodeMirror, html[data-theme="dark"] textarea, html[data-theme="dark"] select, html[data-theme="dark"] input { border: 1px solid #3c4043 !important; background-color: #43474e !important; color: #e6e6e6 !important; }
-html[data-theme="dark"] .CodeMirror { background-color: #35383d !important; }
-html[data-theme="dark"] .CodeMirror-gutters { background-color: #35383d !important; border-color: #3c4043 !important; color: #999 !important; }
+html[data-theme="dark"] .CodeMirror { background-color: #fff !important; color: #000 !important; }
+html[data-theme="dark"] .CodeMirror-gutters { background-color: #f7f7f7 !important; border-color: #ddd !important; color: #999 !important; }
 html[data-theme="dark"] .CodeMirror-linenumber { color: #999 !important; }
+html[data-theme="dark"] .CodeMirror-cursor { border-left-color: #000 !important; }
+html[data-theme="dark"] .CodeMirror-selected { background: #d9d9d9 !important; }
+html[data-theme="dark"] .CodeMirror-focused .CodeMirror-selected { background: #d7d4f0 !important; }
+html[data-theme="dark"] .CodeMirror-focused { background-color: #fff !important; }
 html[data-theme="dark"] input[type="button"], html[data-theme="dark"] button { color: #d4b78f !important; }
 html[data-theme="dark"] input[type="button"]:disabled, html[data-theme="dark"] button:disabled { color: #9a9a9a !important; opacity: 0.55; cursor: not-allowed !important; }
 html[data-theme="dark"] button.primary, html[data-theme="dark"] input[type="button"].primary { color: #d4b78f !important; background-color: #43474e !important; border: 1px solid #5f6368 !important; }
@@ -1088,10 +1096,10 @@ html[data-theme="dark"] .drawer button:hover, html[data-theme="dark"] .drawer in
 html[data-theme="dark"] .all-parameters > .parameter-list > table > tbody > tr > td { border-bottom: 1px dotted #3c4043 !important; }
 html[data-theme="dark"] .all-parameters > .parameter-list > table > tbody > tr:hover { background-color: #43474e !important; }
 html[data-theme="dark"] .overlay-wrapper { background-color: rgba(0,0,0,0.6) !important; }
-html[data-theme="dark"] .overlay-wrapper > .overlay { background-color: #3c4043 !important; color: #e8eaed !important; border: 1px solid #5f6368 !important; box-shadow: 0 6px 24px rgba(212,183,143,0.28) !important; }
-html[data-theme="dark"] .autocomplete { background-color: rgba(60,64,67,0.97) !important; color: #e6e6e6 !important; border: 1px solid #3c4043 !important; box-shadow: 0 4px 20px rgba(212,183,143,0.22) !important; }
+html[data-theme="dark"] .overlay-wrapper > .overlay { background-color: #3c4043 !important; color: #e8eaed !important; border: 1px solid #5f6368 !important; box-shadow: none !important; }
+html[data-theme="dark"] .autocomplete { background-color: rgba(60,64,67,0.97) !important; color: #e6e6e6 !important; border: 1px solid #3c4043 !important; box-shadow: none !important; }
 html[data-theme="dark"] .autocomplete > .suggestion.selected, html[data-theme="dark"] .autocomplete > .suggestion:hover { background-color: #57503f !important; color: #f0d9a8 !important; box-shadow: inset 3px 0 0 #d4b78f !important; } /* highlight cursor lembut, selaras hover device list */
-html[data-theme="dark"] .wizard-dialog { background-color: #3c4043 !important; color: #e8eaed !important; border: 1px solid #5f6368 !important; box-shadow: 0 4px 20px rgba(212,183,143,0.22) !important; }
+html[data-theme="dark"] .wizard-dialog { background-color: #3c4043 !important; color: #e8eaed !important; border: 1px solid #5f6368 !important; box-shadow: none !important; }
 html[data-theme="dark"] .progress { background-color: #3c4043 !important; }
 html[data-theme="dark"] .progress > .progress-bar { background-color: #d4b78f !important; }
 html[data-theme="dark"] { --status-green: 43 74% 72%; --status-red: 0 80% 62%; --status-gray: 43 15% 60%; --status-yellow: 46 79% 70%; }
