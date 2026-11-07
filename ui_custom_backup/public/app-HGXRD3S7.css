@@ -157,7 +157,7 @@ span.inform > *:not(.overview-dot) { display: inline !important; }
 
 
 /* Garis horizontal selaras px: tab duduk di atas garis, nav overlap -1px seperti bawaan */
-html[data-theme="dark"] #header > nav { bottom: -1px !important; }
+/* nav bottom: stabil global */
 html[data-theme="dark"] div.tab > ul > li, html[data-theme="dark"] #header > nav > ul > li { margin-bottom: 0 !important; }
 
 /* Tab elegan ala bawaan */
@@ -229,3 +229,133 @@ span.inform:not(:has(.overview-dot)) > button { display: inline-block !important
 button { display: inline-block !important; }
 
 /* End Clean Final */
+
+/* Geometri tab stabil lintas tema (cegah loncat posisi saat ganti tema) */
+html:not([data-theme="dark"]) div.tab > ul > li.active,
+html:not([data-theme="dark"]) #header > nav > ul > li.active {
+  border-bottom: 1px solid #ffffff !important;
+  margin-bottom: -1px !important;
+  position: relative !important;
+  z-index: 2 !important;
+}
+
+
+/* === Theme-switch layout stability: cegah "deretan device"/konten loncat saat ganti tema === */
+html { color-scheme: light; }
+/* Geometri tab/nav stabil (global, bukan dark-only) */
+#header > nav { bottom: -1px; }
+div.tab > ul { margin-bottom: 0 !important; }
+div.tab > ul > li, #header > nav > ul > li { margin-bottom: 0; }
+/* Filter/actions: metrik identik lintas tema (box model tidak berubah) */
+.filter { margin-bottom: .5em; }
+.filter > input, html[data-theme="dark"] .filter > input {
+  box-sizing: border-box;
+  font-size: 90%;
+  margin: 2px;
+  padding: 2px;
+  line-height: normal;
+}
+.actions-bar, html[data-theme="dark"] .actions-bar { margin-top: 10px; margin-bottom: 10px; }
+/* Tabel devicelist: baris/sel metrik stabil */
+table.table td, table.table th, html[data-theme="dark"] table.table td, html[data-theme="dark"] table.table th {
+  padding: .2em .5em;
+  line-height: normal;
+  box-sizing: content-box;
+}
+
+
+/* === Fix: devicelist geser (spasi/tulisan mengecil) + box editing device page === */
+/* Stabilkan metrik render di area konten saat dark: samakan color-scheme agar input/tabel tidak berubah ukuran */
+html[data-theme="dark"] #content,
+html[data-theme="dark"] #content-wrapper,
+html[data-theme="dark"] #content table,
+html[data-theme="dark"] .filter,
+html[data-theme="dark"] .actions-bar {
+  color-scheme: light;
+}
+/* Pastikan teks/tabel devicelist tidak mengecil/mengerut lintas tema */
+#content, html[data-theme="dark"] #content { font-size: 100%; line-height: normal; }
+table.table, html[data-theme="dark"] table.table { font-size: inherit; }
+table.table td, table.table th,
+html[data-theme="dark"] table.table td, html[data-theme="dark"] table.table th {
+  font-size: inherit !important;
+  line-height: normal !important;
+  padding: .2em .5em !important;
+}
+
+/* Box editing device page (input/textarea/select, termasuk di overlay/parameter) -> samakan tema light agar jelas & stabil */
+html[data-theme="dark"] #content input:not([type="button"]):not([type="submit"]):not([type="reset"]):not([type="checkbox"]):not([type="radio"]),
+html[data-theme="dark"] #content textarea,
+html[data-theme="dark"] #content select,
+html[data-theme="dark"] .overlay-wrapper .overlay input:not([type="button"]):not([type="submit"]):not([type="reset"]):not([type="checkbox"]):not([type="radio"]),
+html[data-theme="dark"] .overlay-wrapper .overlay textarea,
+html[data-theme="dark"] .overlay-wrapper .overlay select,
+html[data-theme="dark"] div.tab_content input:not([type="button"]):not([type="submit"]):not([type="reset"]):not([type="checkbox"]):not([type="radio"]),
+html[data-theme="dark"] div.tab_content textarea,
+html[data-theme="dark"] div.tab_content select {
+  background-color: #ffffff !important;
+  color: #000000 !important;
+  border: 1px solid #b9b098 !important;
+  color-scheme: light !important;
+  box-shadow: none !important;
+}
+html[data-theme="dark"] #content input:not([type="button"]):not([type="submit"]):not([type="reset"]):not([type="checkbox"]):not([type="radio"]):focus,
+html[data-theme="dark"] #content textarea:focus,
+html[data-theme="dark"] #content select:focus,
+html[data-theme="dark"] .overlay-wrapper .overlay input:not([type="button"]):not([type="submit"]):not([type="reset"]):not([type="checkbox"]):not([type="radio"]):focus,
+html[data-theme="dark"] .overlay-wrapper .overlay textarea:focus,
+html[data-theme="dark"] .overlay-wrapper .overlay select:focus {
+  border-color: #046380 !important;
+  background-color: #ffffff !important;
+  color: #000000 !important;
+}
+html[data-theme="dark"] #content input::placeholder,
+html[data-theme="dark"] #content textarea::placeholder,
+html[data-theme="dark"] .overlay-wrapper .overlay input::placeholder,
+html[data-theme="dark"] .overlay-wrapper .overlay textarea::placeholder {
+  color: #666666 !important;
+}
+
+
+/* === Fix: checkbox (ceklis) devicelist hover/checked warna stabil di dark === */
+html[data-theme="dark"] #content input[type="checkbox"],
+html[data-theme="dark"] #content input[type="radio"],
+html[data-theme="dark"] table.table input[type="checkbox"],
+html[data-theme="dark"] table.table input[type="radio"] {
+  accent-color: #d4b78f;
+  background-color: transparent !important;
+  border: none !important;
+  box-shadow: none !important;
+  color-scheme: dark;
+  cursor: pointer;
+}
+html[data-theme="dark"] #content input[type="checkbox"]:hover,
+html[data-theme="dark"] #content input[type="radio"]:hover,
+html[data-theme="dark"] table.table input[type="checkbox"]:hover,
+html[data-theme="dark"] table.table input[type="radio"]:hover {
+  accent-color: #f0d9a8;
+}
+
+
+/* === Fix: kembalikan kotak filter (devicelist) ke gaya dark, bukan putih (override light-input fallback) === */
+html[data-theme="dark"] #content .filter > input,
+html[data-theme="dark"] .filter > input {
+  background-color: #3c4043 !important;
+  border: 1px solid #5f6368 !important;
+  color: #ffffff !important;
+  color-scheme: dark !important;
+  box-shadow: 0 1px 4px rgba(212,183,143,0.15), inset 0 1px 0 rgba(212,183,143,0.12) !important;
+}
+html[data-theme="dark"] #content .filter > input:focus,
+html[data-theme="dark"] #content .filter > input:hover,
+html[data-theme="dark"] .filter > input:focus,
+html[data-theme="dark"] .filter > input:hover {
+  border-color: #d4b78f !important;
+  box-shadow: 0 0 0 2px rgba(212,183,143,0.25), 0 4px 14px rgba(212,183,143,0.25) !important;
+  background-color: #3c4043 !important;
+  color: #ffffff !important;
+}
+html[data-theme="dark"] #content .filter > input::placeholder,
+html[data-theme="dark"] .filter > input::placeholder {
+  color: #b8b0a0 !important;
+}
