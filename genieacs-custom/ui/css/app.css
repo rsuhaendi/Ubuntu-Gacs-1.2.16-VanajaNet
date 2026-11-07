@@ -900,6 +900,7 @@ html[data-theme="dark"] .CodeMirror { background-color: #35383d !important; }
 html[data-theme="dark"] .CodeMirror-gutters { background-color: #35383d !important; border-color: #3c4043 !important; color: #999 !important; }
 html[data-theme="dark"] .CodeMirror-linenumber { color: #999 !important; }
 html[data-theme="dark"] input[type="button"], html[data-theme="dark"] button { color: #d4b78f !important; }
+html[data-theme="dark"] input[type="button"]:disabled, html[data-theme="dark"] button:disabled { color: #9a9a9a !important; opacity: 0.55; cursor: not-allowed !important; }
 html[data-theme="dark"] input[type="button"].primary, html[data-theme="dark"] button.primary { border: 1px solid #3c4043 !important; background-color: #43474e !important; }
 html[data-theme="dark"] input[type="button"].critical, html[data-theme="dark"] button.critical { border: 1px solid #3c4043 !important; background-color: #43474e !important; color: #ff8a80 !important; }
 html[data-theme="dark"] input[type="button"]:hover:enabled, html[data-theme="dark"] button:hover:enabled { background-color: #d4b78f !important; color: #35383d !important; }
@@ -1072,6 +1073,7 @@ html[data-theme="dark"] .CodeMirror { background-color: #35383d !important; }
 html[data-theme="dark"] .CodeMirror-gutters { background-color: #35383d !important; border-color: #3c4043 !important; color: #999 !important; }
 html[data-theme="dark"] .CodeMirror-linenumber { color: #999 !important; }
 html[data-theme="dark"] input[type="button"], html[data-theme="dark"] button { color: #d4b78f !important; }
+html[data-theme="dark"] input[type="button"]:disabled, html[data-theme="dark"] button:disabled { color: #9a9a9a !important; opacity: 0.55; cursor: not-allowed !important; }
 html[data-theme="dark"] button.primary, html[data-theme="dark"] input[type="button"].primary { color: #d4b78f !important; background-color: #43474e !important; border: 1px solid #5f6368 !important; }
 html[data-theme="dark"] button.critical, html[data-theme="dark"] input[type="button"].critical { color: #d4b78f !important; background-color: #43474e !important; border: 1px solid #5f6368 !important; }
 html[data-theme="dark"] .icon.icon-remove, html[data-theme="dark"] .icon.icon-retry { color: #ffffff !important; stroke: #ffffff !important; }
