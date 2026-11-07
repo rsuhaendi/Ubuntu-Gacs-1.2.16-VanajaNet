@@ -23,6 +23,7 @@ html[data-theme="dark"] #content-wrapper { background-color: #35383d; }
 html[data-theme="dark"] #content { background-color: #35383d; }
 html[data-theme="dark"] #header { background-color: #3c4043 !important; border-bottom: 1px solid #d4b78f !important; box-shadow: none !important; } /* border gold, garis membentang gold elegan */
 html[data-theme="dark"] #header > .logo > .version { color: #bbb !important; }
+html[data-theme="dark"] #header > .logo > img { filter: brightness(1.1) sepia(0.45) saturate(1.8) hue-rotate(-8deg); }
 html[data-theme="dark"] #header > .drawer-wrapper > .drawer { background-color: rgba(60,64,67,0.97) !important; color: #e6e6e6 !important; border-bottom: 1px solid #d4b78f !important; border-left: 1px solid #d4b78f !important; border-right: 1px solid #d4b78f !important; box-shadow: none !important; }
 html[data-theme="dark"] #header > .drawer-wrapper > .notifications-wrapper > .notification { background-color: hsl(43 74% 72% / 0.9) !important; color: #000000 !important; border: 1px solid hsl(43 74% 72%) !important; }
 html[data-theme="dark"] #header > nav > ul > li { background-color: rgba(212,183,143,0.12) !important; border-top: 1px solid rgba(212,183,143,0.22) !important; border-left: 1px solid rgba(212,183,143,0.22) !important; border-right: 1px solid rgba(212,183,143,0.22) !important; border-bottom: none !important; box-shadow: none !important; }
