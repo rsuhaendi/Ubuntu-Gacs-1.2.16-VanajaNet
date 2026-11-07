@@ -952,7 +952,8 @@ html[data-theme="dark"] .all-parameters > .parameter-list > table > tbody > tr:h
 html[data-theme="dark"] .all-parameters > .parameter-list > table > tbody > tr:hover > td { color: #ffffff !important; }
 html[data-theme="dark"] div.tab > ul > li:hover { background-color: #57503f !important; }
 html[data-theme="dark"] #header > nav > ul > li:hover { background-color: #57503f !important; }
-html[data-theme="dark"] #side-menu > ul > li > a:hover { background-color: #57503f !important; color: #ffffff !important; }
+html[data-theme="dark"] #side-menu > ul > li > a:hover { background-color: rgba(212, 183, 143, 0.20) !important; color: #f0d9a8 !important; }
+html[data-theme="dark"] #side-menu > ul > li.active > a { background-color: rgba(212, 183, 143, 0.30) !important; color: #f0d9a8 !important; box-shadow: inset 3px 0 0 #d4b78f; }
 
 /* Filter + input border terang */
 html[data-theme="dark"] .filter > input {
@@ -1148,7 +1149,8 @@ html[data-theme="dark"] .all-parameters > .parameter-list > table > tbody > tr:h
 html[data-theme="dark"] .all-parameters > .parameter-list > table > tbody > tr:hover > td { color: #ffffff !important; }
 html[data-theme="dark"] div.tab > ul > li:hover { background-color: #57503f !important; }
 html[data-theme="dark"] #header > nav > ul > li:hover { background-color: #57503f !important; }
-html[data-theme="dark"] #side-menu > ul > li > a:hover { background-color: #57503f !important; color: #ffffff !important; }
+html[data-theme="dark"] #side-menu > ul > li > a:hover { background-color: rgba(212, 183, 143, 0.20) !important; color: #f0d9a8 !important; }
+html[data-theme="dark"] #side-menu > ul > li.active > a { background-color: rgba(212, 183, 143, 0.30) !important; color: #f0d9a8 !important; box-shadow: inset 3px 0 0 #d4b78f; }
 
 /* Filter + input border terang */
 html[data-theme="dark"] .filter > input {
