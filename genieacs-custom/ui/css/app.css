@@ -1959,3 +1959,76 @@ html[data-theme="dark"] .all-parameters > .parameter-list {
 html[data-theme="dark"] .all-parameters > input {
   font-size: 14px !important;
 }
+
+/* === Fix: scrollbar kanan terlihat (light & dark mode) === */
+/* WebKit/Blink (Chrome, Edge, Safari) */
+::-webkit-scrollbar { width: 12px; height: 12px; }
+::-webkit-scrollbar-track { background: #f2ebd5; }
+::-webkit-scrollbar-thumb {
+  background-color: #b9b098;
+  border-radius: 6px;
+  border: 2px solid #f2ebd5;
+}
+::-webkit-scrollbar-thumb:hover { background-color: #046380; }
+html[data-theme="dark"] ::-webkit-scrollbar-track { background: #35383d !important; }
+html[data-theme="dark"] ::-webkit-scrollbar-thumb {
+  background-color: #8a8f98 !important;
+  border-radius: 6px;
+  border: 2px solid #35383d !important;
+}
+html[data-theme="dark"] ::-webkit-scrollbar-thumb:hover { background-color: #d4b78f !important; }
+/* Firefox */
+* { scrollbar-width: auto; }
+html:not([data-theme="dark"]), html:not([data-theme="dark"]) body { scrollbar-color: #b9b098 #f2ebd5; }
+html[data-theme="dark"], html[data-theme="dark"] body { scrollbar-color: #8a8f98 #35383d; }
+/* Pastikan container scroll utama tidak menyembunyikan scrollbar */
+#content-wrapper { overflow-y: auto !important; overflow-x: auto; }
+html, body { overflow: auto; }
+
+/* === Fix: tab aktif light mode sudut atas tetap membulat (tidak nyudut) === */
+html:not([data-theme="dark"]) div.tab > ul > li.active,
+html:not([data-theme="dark"]) #header > nav > ul > li.active,
+html:not([data-theme="dark"]) div.tab > ul > li.active:hover,
+html:not([data-theme="dark"]) #header > nav > ul > li.active:hover,
+div.tab > ul > li.active,
+#header > nav > ul > li.active {
+  border-top-left-radius: 6px !important;
+  border-top-right-radius: 6px !important;
+  border-bottom-left-radius: 0 !important;
+  border-bottom-right-radius: 0 !important;
+}
+
+/* === Fix: tab saat diklik (:active/:focus) tetap membulat, tidak nyudut === */
+div.tab > ul > li:active,
+div.tab > ul > li:focus,
+div.tab > ul > li:focus-within,
+div.tab > ul > li > a:active,
+div.tab > ul > li > a:focus,
+#header > nav > ul > li:active,
+#header > nav > ul > li:focus,
+#header > nav > ul > li:focus-within,
+#header > nav > ul > li > a:active,
+#header > nav > ul > li > a:focus,
+html:not([data-theme="dark"]) div.tab > ul > li:active,
+html:not([data-theme="dark"]) div.tab > ul > li:focus,
+html:not([data-theme="dark"]) div.tab > ul > li.active:active,
+html:not([data-theme="dark"]) div.tab > ul > li > a:active,
+html:not([data-theme="dark"]) div.tab > ul > li > a:focus,
+html:not([data-theme="dark"]) #header > nav > ul > li:active,
+html:not([data-theme="dark"]) #header > nav > ul > li.active:active,
+html:not([data-theme="dark"]) #header > nav > ul > li > a:active,
+html:not([data-theme="dark"]) #header > nav > ul > li > a:focus,
+html[data-theme="dark"] div.tab > ul > li:active,
+html[data-theme="dark"] div.tab > ul > li:focus,
+html[data-theme="dark"] div.tab > ul > li > a:active,
+html[data-theme="dark"] #header > nav > ul > li:active,
+html[data-theme="dark"] #header > nav > ul > li > a:active {
+  border-top-left-radius: 6px !important;
+  border-top-right-radius: 6px !important;
+  border-bottom-left-radius: 0 !important;
+  border-bottom-right-radius: 0 !important;
+}
+div.tab > ul > li > a, #header > nav > ul > li > a {
+  border-top-left-radius: 6px !important;
+  border-top-right-radius: 6px !important;
+}
