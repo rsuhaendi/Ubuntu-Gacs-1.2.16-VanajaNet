@@ -53,8 +53,8 @@ html[data-theme="dark"] input[type="button"].critical, html[data-theme="dark"] b
 html[data-theme="dark"] input[type="button"]:hover:enabled, html[data-theme="dark"] button:hover:enabled { background-color: #d4b78f !important; color: #35383d !important; }
 html[data-theme="dark"] button:hover .icon.icon-remove, html[data-theme="dark"] button:hover .icon.icon-retry { color: #35383d !important; stroke: #35383d !important; }
 html[data-theme="dark"] .drawer button:hover, html[data-theme="dark"] .drawer input[type="button"]:hover { background-color: #d4b78f !important; color: #35383d !important; }
-html[data-theme="dark"] .pie-chart > svg > path { stroke: #3c4043 !important; }
-html[data-theme="dark"] .pie-chart .legend .color { border: 1px solid #3c4043 !important; }
+html[data-theme="dark"] .pie-chart > svg > path, .pie-chart > svg > path { stroke: none !important; }
+html[data-theme="dark"] .pie-chart .legend .color, .pie-chart .legend .color { border: none !important; }
 html[data-theme="dark"] .all-parameters > .parameter-list > table > tbody > tr > td { border-bottom: 1px dotted #3c4043 !important; }
 html[data-theme="dark"] .all-parameters > .parameter-list > table > tbody > tr:hover { background-color: #43474e !important; }
 html[data-theme="dark"] .overlay-wrapper { background-color: rgba(0,0,0,0.6) !important; }
